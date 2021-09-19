@@ -1,0 +1,66 @@
+// Ships
+BITMAP,aquarii,Aquarii.png
+BITMAP,gliese,Gliese.png
+BITMAP,pegasi,Pegasi.png
+// Planets
+BITMAP,earth,earth.png
+BITMAP,jupiter,jupiter.png
+BITMAP,mars,mars.png
+BITMAP,mercury,mercury.png
+BITMAP,neptune,neptune.png
+BITMAP,pluto,pluto.png
+BITMAP,saturn,saturn.png
+BITMAP,uranus,uranus.png
+BITMAP,venus,venus.png
+// Power ups
+BITMAP,shield,shield.png
+BITMAP,power,power.png
+BITMAP,potion,potion.png
+BITMAP,fuel,fuel.png
+BITMAP,drops,drops.png
+BITMAP,diamond,diamond.png
+BITMAP,star,star.png
+BITMAP,cash,cash.png
+BITMAP,nos,nos.png
+BITMAP,level,level.png
+BITMAP,bullet,bullet.png
+BITMAP,coin,coin.png
+BITMAP,battery,battery.png
+BITMAP,heart,heart.png
+BITMAP,muscle,muscle.png
+BITMAP,time,time.png
+// Coins
+BITMAP,silver_coin,silver_coin.png,26,26,6,1,6
+BITMAP,bronse_coin,bronse_coin.png,26,26,6,1,6
+BITMAP,gold_coin,gold_coin.png,26,26,6,1,6
+// Enimies
+BITMAP,garbage_asteroid,garbage_asteroid.png
+BITMAP,garbage_bulb,garbage_bulb.png
+BITMAP,garbage_tin,garbage_tin.png
+BITMAP,garbage_tv,garbage_tv.png
+// UI
+BITMAP,title_screen_bgd,title_screen_bgd.png
+BITMAP,title_font,title_font.png
+BITMAP,space_background_1,space_background_1.png
+BITMAP,empty,empty.png
+BITMAP,hud_bgd,hud_bgd.png
+BITMAP,hud_bgd_btm,hud_bgd_btm.png
+BITMAP,icon_bgd,icon_bgd.png
+BITMAP,green_bar_bubbles,green_bar_bubbles.png
+BITMAP,aquarri_icon_color,aquarri_icon_color.png
+BITMAP,aquarri_icon_grey,aquarri_icon_grey.png
+BITMAP,gliese_icon_color,gliese_icon_color.png
+BITMAP,gliese_icon_grey,gliese_icon_grey.png
+BITMAP,pegasi_icon_color,pegasi_icon_color.png
+BITMAP,pegasi_icon_grey,pegasi_icon_grey.png
+// BUTTON
+BITMAP,level_1_active,level_1_active.png
+BITMAP,level_2_active,level_2_active.png
+BITMAP,level_3_active,level_3_active.png
+BITMAP,level_inactive,level_inactive.png
+// Other
+BITMAP,box,box.png
+BITMAP,full,full.png
+ANIM,coins,coin_animation.txt
+FONT,gooddogfont,GOODDP__.TTF
+FONT,hackbotfont,Hackbot.otf
