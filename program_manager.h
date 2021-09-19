@@ -20,7 +20,11 @@ struct program_manager
     vector<level_data> level_conquered;
 };
 
-void set_game_level(program_manager &manager, const level_data &level);
+bool if_level_conquered(const program_manager &manager, const level_data &level);
+
+void handle_mouse_select(const button &button_to_check, program_manager &manager, bool &selected);
+
+void set_initial_conquered_level(program_manager &manager);
 
 program_manager create_new_manager();
 

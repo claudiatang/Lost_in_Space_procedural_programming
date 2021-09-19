@@ -11,8 +11,6 @@ using namespace std;
 #define PLAYER_ROTATE_SPEED 3
 #define SCREEN_BORDER 50
 
-
-
 /**
  * Different options for the kind of ship.
  * Adjusts the image used.
@@ -36,7 +34,7 @@ enum ship_kind
 struct player_power_up
 {
     power_up_kind kind;
-    int           number;
+    int number;
 };
 
 /**
@@ -50,11 +48,11 @@ struct player_power_up
  */
 struct player_data
 {
-    sprite                   player_sprite;
-    int                      score;
-    ship_kind                kind;
-    double                   fuel_pct;
-    vector<player_power_up>  player_power_ups;
+    sprite player_sprite;
+    int score;
+    ship_kind kind;
+    double fuel_pct;
+    vector<player_power_up> player_power_ups;
 };
 
 /**
@@ -109,4 +107,4 @@ void player_switch_ship(player_data &player, ship_kind target);
  */
 void handle_input(player_data &player);
 
-#endif 
+#endif

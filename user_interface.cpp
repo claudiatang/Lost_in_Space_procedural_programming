@@ -1,45 +1,45 @@
 #include "splashkit.h"
 #include "user_interface.h"
 
-button create_new_button(string str_stem, string str_num, float x, float y)
+button create_new_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name)
 {
     button new_button;
-    bitmap button_image = bitmap_named(str_stem + str_num + "_active");
+    new_button.active = is_active;
+    new_button.name = btn_name;
 
-    new_button.button_sprite = create_sprite(button_image);
+    if (is_active)
+    {
+        new_button.image = bitmap_named(str_stem + str_num + "_active");
+    }
+    else
+    {
+        new_button.image = bitmap_named(str_stem + "_inactive");
+    }
 
-    sprite_add_layer(new_button.button_sprite, bitmap_named(str_stem + "_inactive"), "inactive");
-
-    sprite_hide_layer(new_button.button_sprite, "inactive");
-
-    sprite_set_x(new_button.button_sprite, x);
-    sprite_set_y(new_button.button_sprite, y);
+    new_button.top_left.x = x;
+    new_button.top_left.y = y;
+    new_button.bottom_right.x = x + bitmap_width(new_button.image);
+    new_button.bottom_right.y = y + bitmap_height(new_button.image);
 
     return new_button;
 }
 
-void draw_button(button &button)
+void draw_button(const button &button_to_draw)
 {
-    draw_sprite(button.button_sprite);
+    draw_bitmap(button_to_draw.image, button_to_draw.top_left.x, button_to_draw.top_left.y);
 }
 
-void update_button(button &button)
+bool loc_within_button(const button &button, point_2d input_loc)
 {
-    update_sprite(button.button_sprite);
+    if (input_loc.x > button.top_left.x && input_loc.x < button.bottom_right.x && input_loc.y > button.top_left.y && input_loc.y < button.bottom_right.y)
+    {
+        return true;
+    }
 
-    if (button.active)
-    {
-        sprite_show_layer(button.button_sprite, "active");
-        sprite_hide_layer(button.button_sprite, "inactive");
-    }
-    else if (!button.active)
-    {
-        sprite_show_layer(button.button_sprite, "inactive");
-        sprite_hide_layer(button.button_sprite, "active");
-    }
+    return false;
 }
 
-string format_time(int seconds)
+string format_time(int &seconds)
 {
     string result;
 
@@ -128,9 +128,9 @@ void draw_power_up_icon(const power_up_kind &power_up_kind, int power_up_num, do
     draw_text("X " + std::to_string(power_up_num), COLOR_WHITE_SMOKE, "hackbotfont", 40, bitmap_width(power_up_icon) / 2 + x, bitmap_width(power_up_icon) * 2 / 3 + y, option_to_screen());
 }
 
-void draw_score(const player_data &player)
+void draw_score(const player_data &player, double x, double y)
 {
-    draw_text("SCORE: " + to_string(player.score), COLOR_ORANGE, "hackbotfont", 25, 450, 30, option_to_screen());
+    draw_text("SCORE: " + to_string(player.score), COLOR_ORANGE, "hackbotfont", 25, x, y, option_to_screen());
 }
 
 void draw_time_remained(int seconds_remained, double x, double y)
@@ -181,7 +181,7 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
     draw_ship_icon(player, GLIESE, 120, 80);
     draw_ship_icon(player, PEGASI, 220, 80);
 
-    draw_score(player);
+    draw_score(player, 450, 30);
 
     draw_minimap(game_power_ups, game_fuels, player, 1010, 20, screen_width() / 6, screen_height() / 6);
 
@@ -191,12 +191,6 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
     {
         draw_power_up_icon(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 30 + i * 150, screen_height() - hub_bgd_btm_height - 50);
     }
-
-    //draw YOU WIN when game power ups are zero
-    // if (game_power_ups.size() == 0)
-    // {
-    //     //write_line("YOU WIN!!");
-    // }
 }
 
 void draw_game_play_finish(bool finished, bool win)

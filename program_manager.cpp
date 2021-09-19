@@ -1,31 +1,76 @@
 #include "splashkit.h"
 #include "program_manager.h"
 
-void set_game_level(program_manager &manager, const level_data &level)
+bool if_level_conquered(const program_manager &manager, const level_data &level)
 {
-    manager.new_game_level = level;
+    bool if_conquered = false;
+
+    for (int i = 0; i < manager.level_conquered.size(); i++)
+    {
+        if (level == manager.level_conquered[i])
+        {
+            if_conquered = true;
+        }
+    }
+
+    return if_conquered;
+}
+
+void handle_mouse_select(const button &button_to_check, program_manager &manager, bool &selected)
+{
+    selected = false;
+
+    if (mouse_clicked(LEFT_BUTTON) && loc_within_button(button_to_check, mouse_position()))
+    {
+        if (button_to_check.name == "level_one")
+        {
+            manager.new_game_level = LEVEL_1;
+            selected = true;
+        }
+        else if (button_to_check.name == "level_two")
+        {
+            manager.new_game_level = LEVEL_2;
+            selected = true;
+        }
+        else if (button_to_check.name == "level_three")
+        {
+            manager.new_game_level = LEVEL_3;
+            selected = true;
+        }
+    }
+}
+
+void set_initial_conquered_level(program_manager &manager)
+{
+    for (int i = 0; i < manager.level_conquered.size(); i++)
+    {
+        manager.level_conquered.pop_back();
+    };
+
+    manager.level_conquered.push_back(LEVEL_1);
 }
 
 program_manager create_new_manager()
 {
     program_manager manager;
 
+    manager.new_game_level = LEVEL_1;
+    set_initial_conquered_level(manager);
+
     return manager;
 }
 
 void run_title_screen()
 {
-    int title_seconds;
+    //int title_seconds;
     timer title_timer = create_timer("Title Timer");
     bitmap title_bgd = bitmap_named("title_screen_bgd");
     bitmap title_font = bitmap_named("title_font");
 
     start_timer("Title Timer");
 
-    while (not quit_requested() && title_seconds < 3)
+    while (!quit_requested() && timer_ticks(title_timer) < 3000)
     {
-        title_seconds = timer_ticks(title_timer) / 1000;
-
         clear_screen(COLOR_BLACK);
 
         draw_bitmap(title_bgd, 0, 0);
@@ -39,20 +84,39 @@ void run_title_screen()
 
 void run_level_selection(program_manager &manager)
 {
-    button level_one = create_new_button("level", "_1", 90, 185);
-    button level_two = create_new_button("level", "_2", 495, 185);
-    button level_three = create_new_button("level", "_3", 900, 185);
-    bitmap selection_bgd = bitmap_named("title_screen_bgd");
+    write_line("step into level selection");
+    bool level_selected = false;
 
-    draw_bitmap(selection_bgd, 0, 0);
-    draw_button(level_one);
-    draw_button(level_two);
-    draw_button(level_three);
+    button level_one = create_new_button("level", "_1", 90, 185, if_level_conquered(manager, LEVEL_1), "level_one");
+    button level_two = create_new_button("level", "_2", 495, 185, if_level_conquered(manager, LEVEL_2), "level_two");
+    button level_three = create_new_button("level", "_3", 900, 185, if_level_conquered(manager, LEVEL_3), "level_three");
+
+    while (!quit_requested() && !level_selected)
+    {
+
+        process_events();
+        handle_mouse_select(level_one, manager, level_selected);
+        if (!level_selected)
+        {
+            handle_mouse_select(level_two, manager, level_selected);
+        }
+        if (!level_selected)
+        {
+            handle_mouse_select(level_three, manager, level_selected);
+        }
+
+        clear_screen(COLOR_BLACK);
+        draw_bitmap("title_screen_bgd", 0, 0);
+        draw_button(level_one);
+        draw_button(level_two);
+        draw_button(level_three);
+        refresh_screen(60);
+    }
 }
 
 void run_game_play(program_manager &manager)
 {
-    game_data new_game = create_new_game();
+    game_data new_game = create_new_game(manager.new_game_level);
 
     new_game.player = new_player(screen_width(), screen_height());
 
@@ -62,7 +126,7 @@ void run_game_play(program_manager &manager)
         new_game.player.player_power_ups[i].number = 0;
     }
 
-    while (not quit_requested())
+    while (!quit_requested() && !new_game.game_exit)
     {
         // Handle input to adjust player movement
         process_events();
@@ -78,7 +142,20 @@ void run_game_play(program_manager &manager)
         refresh_screen(60);
     }
 
+    bool add_new_conquered = true;
 
+    for (int i = 0; i < manager.level_conquered.size(); i++)
+    {
+        if (new_game.level == manager.level_conquered[i])
+        {
+            add_new_conquered = false;
+        }
+    }
+
+    if (add_new_conquered == true)
+    {
+        manager.level_conquered.push_back(new_game.level);
+    }
 }
 
 void run_modules()

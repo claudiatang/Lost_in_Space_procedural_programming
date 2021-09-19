@@ -83,13 +83,22 @@ void update_game_status(game_data &game)
     {
         game.game_won = true;
     }
+
+    if (!game.game_exit && timer_ticks(game.time.game_timer) / 1000 - game.time.seconds_elapsed > 3)
+    {
+        game.game_exit = true;
+        if (has_timer("Game Timer"))
+        {
+            free_timer(game.time.game_timer);
+        }
+    }
 }
 
 void update_game(game_data &game)
 {
 
     //update game time
-    if (!game.game_finished)
+    if (!game.game_finished && !game.game_won && !game.game_exit)
     {
         game.time.seconds_elapsed = timer_ticks(game.time.game_timer) / 1000;
         game.time.seconds_remained = game.time.seconds_allowed - game.time.seconds_elapsed;
@@ -121,13 +130,6 @@ void update_game(game_data &game)
                 add_player_fuel(game.player, game.fuels[i].kind);
                 delete_game_fuel(game, i);
             }
-        }
-    }
-    else
-    {
-        if (has_timer("Game Timer"))
-        {
-            free_timer(game.time.game_timer);
         }
     }
 
@@ -279,16 +281,17 @@ void add_game_fuels(game_data &game)
     }
 }
 
-game_data create_new_game()
+game_data create_new_game(level_data &level)
 {
     game_data game;
 
     game.time.game_timer = create_timer("Game Timer");
     game.time.seconds_allowed = 60;
     start_timer("Game Timer");
-    game.level = LEVEL_1;
+    game.level = level;
     add_game_power_ups(game);
     add_game_fuels(game);
+    game.game_exit = false;
     game.game_finished = false;
     game.game_won = false;
 

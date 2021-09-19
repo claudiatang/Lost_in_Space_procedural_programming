@@ -56,6 +56,7 @@ player_data new_player(int win_width, int win_height)
     sprite_set_y(result.player_sprite, win_height / 2 - sprite_height(result.player_sprite) / 2);
 
     result.fuel_pct = 0.5;
+    result.score = 0;
 
     return result;
 }

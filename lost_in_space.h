@@ -53,6 +53,7 @@ struct game_data
     vector<fuel_data> fuels;
     bool game_finished;
     bool game_won;
+    bool game_exit;
 };
 
 /**
@@ -163,6 +164,6 @@ void add_game_fuels(game_data &game);
  * 
  * @return a game_data struct as the new game 
  */
-game_data create_new_game();
+game_data create_new_game(level_data &level);
 
 #endif

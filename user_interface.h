@@ -11,19 +11,20 @@ using std::vector;
 
 struct button
 {
-    sprite button_sprite;
+    string name;
+    bitmap image;
+    point_2d top_left;
+    point_2d bottom_right;
     bool active;
 };
 
-button create_new_button(string str_stem, string str_num, float x, float y);
+button create_new_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name);
 
-void draw_button(button &button_to_draw);
+void draw_button(const button &button_to_draw);
 
-void update_button(button &button_to_update);
+bool loc_within_button(const button &button, point_2d input_loc);
 
-string format_time(int seconds);
-
-void draw_time_remained(int seconds_remained, double x, double y);
+string format_time(int &seconds);
 
 /**
  * Draw fuel bar and related text display.
@@ -85,7 +86,9 @@ void draw_power_up_icon(const power_up_kind &power_up_kind, int power_up_num, do
  * 
  * @param player game player
  */
-void draw_score(const player_data &player);
+void draw_score(const player_data &player, double x, double y);
+
+void draw_time_remained(int seconds_remained, double x, double y);
 
 /**
  * This function will take a player_data struct
