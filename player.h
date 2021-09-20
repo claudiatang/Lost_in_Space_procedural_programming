@@ -3,7 +3,7 @@
 
 #include "splashkit.h"
 #include <vector>
-#include "power_up.h"
+#include "game_actors.h"
 
 using namespace std;
 

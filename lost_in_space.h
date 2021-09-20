@@ -3,8 +3,8 @@
 
 //#include <vector>
 #include "splashkit.h"
-//#include "player.h"
-//#include "power_up.h"
+#include "player.h"
+#include "game_actors.h"
 #include "user_interface.h"
 
 using std::string;
@@ -24,6 +24,11 @@ enum level_data
 /**
  * data for timer and seconds
  * 
+ * @field  game timer
+ * @field  seconds allowed
+ * @field  seconds elapsed
+ * @field  seconds remained
+ * 
  */
 struct time_data
 {
@@ -41,6 +46,12 @@ struct time_data
  * @field   player            player data in the game
  * @field   power up kinds    all the power up kind the game has
  * @field   power ups         all the power ups data the game has
+ * @field   fuel kinds        all the fuel kind the game has
+ * @field   fuels             all the fuels data the game has
+ * @field   game finished     whether the game-play stage has finished
+ * @field   game won          whether player has won the game
+ * @field   game exit         whether should exit running the game play now
+ * 
  */
 struct game_data
 {
@@ -51,6 +62,7 @@ struct game_data
     vector<power_up_data> power_ups;
     vector<fuel_kind> fuel_kinds;
     vector<fuel_data> fuels;
+    vector<garbage_data> garbages;
     bool game_finished;
     bool game_won;
     bool game_exit;
@@ -72,6 +84,8 @@ void add_player_power_up(player_data &player, power_up_kind &kind);
  * @param kind     the kind of fuel to be added to the player
  */
 void add_player_fuel(player_data &player, fuel_kind &kind);
+
+void reduce_player_fuel(player_data &player, garbage_kind &kind);
 
 /**
  * Delete a power up from the game

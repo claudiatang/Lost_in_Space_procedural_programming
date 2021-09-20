@@ -1,7 +1,7 @@
 #include <cmath>
 #include "splashkit.h"
 #include "player.h"
-#include "power_up.h"
+#include "game_actors.h"
 
 bitmap ship_bitmap(ship_kind kind)
 {

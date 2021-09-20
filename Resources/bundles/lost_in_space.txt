@@ -33,7 +33,7 @@ BITMAP,time,time.png
 BITMAP,silver_coin,silver_coin.png,26,26,6,1,6
 BITMAP,bronse_coin,bronse_coin.png,26,26,6,1,6
 BITMAP,gold_coin,gold_coin.png,26,26,6,1,6
-// Enimies
+// Enemies
 BITMAP,garbage_asteroid,garbage_asteroid.png
 BITMAP,garbage_bulb,garbage_bulb.png
 BITMAP,garbage_tin,garbage_tin.png

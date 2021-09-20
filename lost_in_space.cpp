@@ -50,6 +50,18 @@ void add_player_fuel(player_data &player, fuel_kind &kind)
     }
 }
 
+void reduce_player_fuel(player_data &player, garbage_kind &kind)
+{
+    if (kind == ASTEROID)
+    {
+        player.fuel_pct = max(player.fuel_pct - 0.002, 0.0);
+    }
+    else
+    {
+        player.fuel_pct = max(player.fuel_pct - 0.001, 0.0);
+    }
+}
+
 void delete_game_power_up(game_data &game, int indx)
 {
     for (int k = indx; k < game.power_ups.size() - 1; k++)
@@ -106,7 +118,7 @@ void update_game(game_data &game)
         //update player
         update_player(game.player);
 
-        //update power ups
+        //update player collision with power ups
         for (int i = 0; i < game.power_ups.size(); i++)
         {
             //write_line("power up index [" + to_string(i) + "]");
@@ -120,15 +132,26 @@ void update_game(game_data &game)
             }
         }
 
-        //update fuels
+        //update player collision with fuels
         for (int i = 0; i < game.fuels.size(); i++)
         {
-            update_fuel(game.fuels[i]);
+            update_actor_sprite(game.fuels[i].fuel_sprite);
 
             if (sprite_collision(game.fuels[i].fuel_sprite, game.player.player_sprite))
             {
                 add_player_fuel(game.player, game.fuels[i].kind);
                 delete_game_fuel(game, i);
+            }
+        }
+
+        //update player collision with garbages
+        for (int i = 0; i < game.garbages.size(); i++)
+        {
+            update_actor_sprite(game.garbages[i].garbage_sprite);
+
+            if (sprite_collision(game.garbages[i].garbage_sprite, game.player.player_sprite))
+            {
+                reduce_player_fuel(game.player, game.garbages[i].kind);
             }
         }
     }
@@ -183,7 +206,9 @@ void draw_game(const game_data &game)
 
     draw_game_fuels(game.fuels);
 
-    draw_hud(game.player, game.power_ups, game.fuels, game.power_up_kinds);
+    draw_garbage(game.garbages);
+
+    draw_hud(game.player, game.power_ups, game.fuels, game.garbages, game.power_up_kinds);
 
     draw_game_play_finish(game.game_finished, game.game_won);
 
@@ -281,6 +306,33 @@ void add_game_fuels(game_data &game)
     }
 }
 
+void add_game_garbages(game_data &game)
+{
+    int garbages_num;
+
+    switch (game.level)
+    {
+    case LEVEL_1:
+        garbages_num = rnd(6, 8);
+        break;
+    case LEVEL_2:
+        garbages_num = rnd(9, 11);
+        break;
+    case LEVEL_3:
+        garbages_num = rnd(12, 15);
+        break;
+    default:
+        garbages_num = rnd(8, 12);
+        write_line("!!!set game garbage number wrong!!!");
+        break;
+    }
+
+    for (int i = 0; i < garbages_num; i++)
+    {
+        game.garbages.push_back(new_garbage(rnd(int(-1.5 * screen_width()), int(1.5 * screen_width())), rnd(int(-1.5 * screen_height()), int(1.5 * screen_height())), garbage_kind(rnd(0, 3))));
+    }
+}
+
 game_data create_new_game(level_data &level)
 {
     game_data game;
@@ -291,6 +343,7 @@ game_data create_new_game(level_data &level)
     game.level = level;
     add_game_power_ups(game);
     add_game_fuels(game);
+    add_game_garbages(game);
     game.game_exit = false;
     game.game_finished = false;
     game.game_won = false;

@@ -1,26 +1,44 @@
 #include "splashkit.h"
 #include "program_manager.h"
 
-bool if_level_conquered(const program_manager &manager, const level_data &level)
+bool if_level_unlocked(const program_manager &manager, const level_data &level)
 {
-    bool if_conquered = false;
+    bool if_unlocked = false;
 
-    for (int i = 0; i < manager.level_conquered.size(); i++)
+    for (int i = 0; i < manager.level_unlocked.size(); i++)
     {
-        if (level == manager.level_conquered[i])
+        if (level == manager.level_unlocked[i])
         {
-            if_conquered = true;
+            if_unlocked = true;
         }
     }
 
-    return if_conquered;
+    return if_unlocked;
 }
 
-void handle_mouse_select(const button &button_to_check, program_manager &manager, bool &selected)
+void add_unlocked_level(program_manager &manager, const game_data game_accomplished)
+{
+    bool add_new_unlocked = true;
+
+    for (int i = 0; i < manager.level_unlocked.size(); i++)
+    {
+        if (static_cast<int>(game_accomplished.level) + 1 == static_cast<int>(manager.level_unlocked[i]))
+        {
+            add_new_unlocked = false;
+        }
+    }
+
+    if (add_new_unlocked == true)
+    {
+        manager.level_unlocked.push_back(static_cast<level_data>(static_cast<int>(game_accomplished.level) + 1));
+    }
+}
+
+void handle_select_level(const button &button_to_check, program_manager &manager, bool &selected)
 {
     selected = false;
 
-    if (mouse_clicked(LEFT_BUTTON) && loc_within_button(button_to_check, mouse_position()))
+    if (mouse_clicked(LEFT_BUTTON) && loc_within_button(button_to_check, mouse_position()) && button_to_check.active)
     {
         if (button_to_check.name == "level_one")
         {
@@ -40,22 +58,21 @@ void handle_mouse_select(const button &button_to_check, program_manager &manager
     }
 }
 
-void set_initial_conquered_level(program_manager &manager)
+void set_initial_unlocked_level(program_manager &manager)
 {
-    for (int i = 0; i < manager.level_conquered.size(); i++)
+    for (int i = 0; i < manager.level_unlocked.size(); i++)
     {
-        manager.level_conquered.pop_back();
+        manager.level_unlocked.pop_back();
     };
 
-    manager.level_conquered.push_back(LEVEL_1);
+    manager.level_unlocked.push_back(LEVEL_1);
 }
 
 program_manager create_new_manager()
 {
     program_manager manager;
 
-    manager.new_game_level = LEVEL_1;
-    set_initial_conquered_level(manager);
+    set_initial_unlocked_level(manager);
 
     return manager;
 }
@@ -74,7 +91,7 @@ void run_title_screen()
         clear_screen(COLOR_BLACK);
 
         draw_bitmap(title_bgd, 0, 0);
-        draw_bitmap(title_font, screen_width() / 2 - bitmap_width(title_font) / 2, screen_height() / 2 - (2 * bitmap_height(title_font) / 3));
+        draw_bitmap(title_font, screen_width() / 2 - bitmap_width(title_font) / 2, screen_height() / 2 - bitmap_height(title_font) / 2);
 
         refresh_screen(60);
     }
@@ -87,22 +104,22 @@ void run_level_selection(program_manager &manager)
     write_line("step into level selection");
     bool level_selected = false;
 
-    button level_one = create_new_button("level", "_1", 90, 185, if_level_conquered(manager, LEVEL_1), "level_one");
-    button level_two = create_new_button("level", "_2", 495, 185, if_level_conquered(manager, LEVEL_2), "level_two");
-    button level_three = create_new_button("level", "_3", 900, 185, if_level_conquered(manager, LEVEL_3), "level_three");
+    button level_one = create_new_button("level", "_1", 90, 185, if_level_unlocked(manager, LEVEL_1), "level_one");
+    button level_two = create_new_button("level", "_2", 495, 185, if_level_unlocked(manager, LEVEL_2), "level_two");
+    button level_three = create_new_button("level", "_3", 900, 185, if_level_unlocked(manager, LEVEL_3), "level_three");
 
     while (!quit_requested() && !level_selected)
     {
 
         process_events();
-        handle_mouse_select(level_one, manager, level_selected);
+        handle_select_level(level_one, manager, level_selected);
         if (!level_selected)
         {
-            handle_mouse_select(level_two, manager, level_selected);
+            handle_select_level(level_two, manager, level_selected);
         }
         if (!level_selected)
         {
-            handle_mouse_select(level_three, manager, level_selected);
+            handle_select_level(level_three, manager, level_selected);
         }
 
         clear_screen(COLOR_BLACK);
@@ -142,23 +159,18 @@ void run_game_play(program_manager &manager)
         refresh_screen(60);
     }
 
-    bool add_new_conquered = true;
-
-    for (int i = 0; i < manager.level_conquered.size(); i++)
+    if (new_game.game_won)
     {
-        if (new_game.level == manager.level_conquered[i])
-        {
-            add_new_conquered = false;
-        }
+        add_unlocked_level(manager, new_game);
     }
 
-    if (add_new_conquered == true)
+    for (int i = 0; i < manager.level_unlocked.size(); i++)
     {
-        manager.level_conquered.push_back(new_game.level);
+        write_line("conquered level index [" + to_string(manager.level_unlocked[i]) + "]");
     }
 }
 
-void run_modules()
+void run_post_game(program_manager &manager)
 {
     ;
 }

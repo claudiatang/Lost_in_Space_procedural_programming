@@ -4,7 +4,7 @@
 #include <vector>
 #include "splashkit.h"
 #include "player.h"
-#include "power_up.h"
+#include "game_actors.h"
 
 using std::string;
 using std::vector;
@@ -69,7 +69,7 @@ point_2d mini_map_coordinate(const sprite &actor, int map_width, int map_height)
  * @param map_width    the width of minimap
  * @param map_height   the height of minimap
  */
-void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data> &fuels, const player_data &player, double x, double y, int map_width, int map_height);
+void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data> &fuels, const vector<garbage_data> &garbages, const player_data &player, double x, double y, int map_width, int map_height);
 
 /**
  * Draw a specified power up icon and display the collected number. 
@@ -111,7 +111,7 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
  * @param game_fuels 
  * @param game_power_up_kinds 
  */
-void draw_hud(const player_data &game_player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<power_up_kind> &game_power_up_kinds);
+void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds);
 
 void draw_game_play_finish(bool finished, bool win);
 

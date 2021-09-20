@@ -7,7 +7,7 @@ button create_new_button(string str_stem, string str_num, double x, double y, bo
     new_button.active = is_active;
     new_button.name = btn_name;
 
-    if (is_active)
+    if (new_button.active)
     {
         new_button.image = bitmap_named(str_stem + str_num + "_active");
     }
@@ -92,7 +92,7 @@ point_2d mini_map_coordinate(const sprite &actor, int map_width, int map_height)
     return actor_map_loc;
 }
 
-void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data> &fuels, const player_data &player, double x, double y, int map_width, int map_height)
+void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data> &fuels, const vector<garbage_data> &garbages, const player_data &player, double x, double y, int map_width, int map_height)
 {
     //get the interger part of player location x y;
     int player_x = (int)center_point(player.player_sprite).x;
@@ -104,13 +104,19 @@ void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data
     //draw power up dots
     for (int i = 0; i < power_ups.size(); i++)
     {
-        fill_circle(COLOR_WHITE_SMOKE, mini_map_coordinate(power_ups[i].power_up_sprite, map_width, map_height).x + x - 1, mini_map_coordinate(power_ups[i].power_up_sprite, map_width, map_height).y + y - 1, 1, option_to_screen());
+        fill_circle(COLOR_YELLOW, mini_map_coordinate(power_ups[i].power_up_sprite, map_width, map_height).x + x - 1, mini_map_coordinate(power_ups[i].power_up_sprite, map_width, map_height).y + y - 1, 1, option_to_screen());
     }
 
     //draw fuels dots
     for (int i = 0; i < fuels.size(); i++)
     {
         fill_circle(COLOR_GREEN, mini_map_coordinate(fuels[i].fuel_sprite, map_width, map_height).x + x - 1, mini_map_coordinate(fuels[i].fuel_sprite, map_width, map_height).y + y - 1, 1, option_to_screen());
+    }
+
+    //draw garbadge dots
+    for (int i = 0; i < garbages.size(); i++)
+    {
+        fill_circle(COLOR_GRAY, mini_map_coordinate(garbages[i].garbage_sprite, map_width, map_height).x + x - 1, mini_map_coordinate(garbages[i].garbage_sprite, map_width, map_height).y + y - 1, 1, option_to_screen());
     }
 
     //draw player dot
@@ -163,7 +169,7 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
     }
 }
 
-void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<power_up_kind> &game_power_up_kinds)
+void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds)
 {
     bitmap hud_top = bitmap_named("hud_bgd");
     bitmap hud_bottom = bitmap_named("hud_bgd_btm");
@@ -183,7 +189,7 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
 
     draw_score(player, 450, 30);
 
-    draw_minimap(game_power_ups, game_fuels, player, 1010, 20, screen_width() / 6, screen_height() / 6);
+    draw_minimap(game_power_ups, game_fuels, game_garbages, player, 1010, 20, screen_width() / 6, screen_height() / 6);
 
     //Draw power up icons according to the game's power ups
     //and player's power up numbers
