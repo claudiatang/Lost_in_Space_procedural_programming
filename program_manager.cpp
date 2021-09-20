@@ -1,7 +1,7 @@
 #include "splashkit.h"
 #include "program_manager.h"
 
-bool if_level_unlocked(const program_manager &manager, const level_data &level)
+bool if_level_unlocked(const program_manager &manager, const game_level &level)
 {
     bool if_unlocked = false;
 
@@ -30,7 +30,7 @@ void add_unlocked_level(program_manager &manager, const game_data game_accomplis
 
     if (add_new_unlocked == true)
     {
-        manager.level_unlocked.push_back(static_cast<level_data>(static_cast<int>(game_accomplished.level) + 1));
+        manager.level_unlocked.push_back(static_cast<game_level>(static_cast<int>(game_accomplished.level) + 1));
     }
 }
 

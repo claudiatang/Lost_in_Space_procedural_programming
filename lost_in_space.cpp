@@ -160,7 +160,7 @@ void update_game(game_data &game)
     update_game_status(game);
 }
 
-bitmap get_bgd_image(const level_data &level)
+bitmap get_bgd_image(const game_level &level)
 {
     switch (level)
     {
@@ -218,7 +218,7 @@ void draw_game(const game_data &game)
     draw_player(game.player);
 }
 
-vector<power_up_kind> game_power_up_kinds(level_data &level)
+vector<power_up_kind> game_power_up_kinds(game_level &level)
 {
     vector<power_up_kind> kinds;
 
@@ -270,7 +270,7 @@ void add_game_power_ups(game_data &game)
     }
 }
 
-vector<fuel_kind> game_fuel_kinds(level_data &level)
+vector<fuel_kind> game_fuel_kinds(game_level &level)
 {
     vector<fuel_kind> kinds;
 
@@ -333,7 +333,7 @@ void add_game_garbages(game_data &game)
     }
 }
 
-game_data create_new_game(level_data &level)
+game_data create_new_game(game_level &level)
 {
     game_data game;
 

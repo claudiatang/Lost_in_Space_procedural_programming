@@ -14,7 +14,7 @@ using std::vector;
  * Enumerate data for different game levels
  * 
  */
-enum level_data
+enum game_level
 {
     LEVEL_1,
     LEVEL_2,
@@ -55,7 +55,7 @@ struct time_data
  */
 struct game_data
 {
-    level_data level;
+    game_level level;
     time_data time;
     player_data player;
     vector<power_up_kind> power_up_kinds;
@@ -121,7 +121,7 @@ void update_game(game_data &game);
  * @param level     input game level data
  * @return bitmap   return a bitmap background for current game
  */
-bitmap get_bgd_image(const level_data &level);
+bitmap get_bgd_image(const game_level &level);
 
 /**
  * Draw the in-game background of a game
@@ -145,7 +145,7 @@ void draw_game(const game_data &game);
  * @param level  game level
  * @return       vector<power_up_kind> 
  */
-vector<power_up_kind> game_power_up_kinds(level_data &level);
+vector<power_up_kind> game_power_up_kinds(game_level &level);
 
 /**
  * Add power up of the kinds that will appear in the game
@@ -163,7 +163,7 @@ void add_game_power_ups(game_data &game);
  * @param level  game level
  * @return       vector<fuel_kind> 
  */
-vector<fuel_kind> game_fuel_kinds(level_data &level);
+vector<fuel_kind> game_fuel_kinds(game_level &level);
 
 /**
  * Add fuels of the kinds that will appear in the game
@@ -178,6 +178,6 @@ void add_game_fuels(game_data &game);
  * 
  * @return a game_data struct as the new game 
  */
-game_data create_new_game(level_data &level);
+game_data create_new_game(game_level &level);
 
 #endif

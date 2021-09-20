@@ -7,11 +7,11 @@
 
 struct program_manager
 {
-    level_data new_game_level;
-    vector<level_data> level_unlocked;
+    game_level new_game_level;
+    vector<game_level> level_unlocked;
 };
 
-bool if_level_unlocked(const program_manager &manager, const level_data &level);
+bool if_level_unlocked(const program_manager &manager, const game_level &level);
 
 void add_unlocked_level(program_manager &manager, const game_data game_accomplished);
 
