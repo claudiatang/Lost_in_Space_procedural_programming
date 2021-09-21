@@ -79,7 +79,7 @@ string ship_icon_string(ship_kind kind);
  * 
  * @returns     The new player data
  */
-player_data new_player(int screen_x, int screen_y);
+player_data new_player();
 
 /**
  * Draws the player to the screen. 

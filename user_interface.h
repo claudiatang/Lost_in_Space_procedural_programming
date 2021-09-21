@@ -111,7 +111,7 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
  * @param game_fuels 
  * @param game_power_up_kinds 
  */
-void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds);
+void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds, int seconds_remained);
 
 void draw_game_play_finish(bool finished, bool win);
 

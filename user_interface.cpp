@@ -169,7 +169,7 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
     }
 }
 
-void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds)
+void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds, int seconds_remained)
 {
     bitmap hud_top = bitmap_named("hud_bgd");
     bitmap hud_bottom = bitmap_named("hud_bgd_btm");
@@ -188,6 +188,7 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
     draw_ship_icon(player, PEGASI, 220, 80);
 
     draw_score(player, 450, 30);
+    draw_time_remained(seconds_remained, 600, 30);
 
     draw_minimap(game_power_ups, game_fuels, game_garbages, player, 1010, 20, screen_width() / 6, screen_height() / 6);
 

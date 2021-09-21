@@ -33,7 +33,7 @@ string ship_icon_string(ship_kind kind)
     }
 }
 
-player_data new_player(int win_width, int win_height)
+player_data new_player()
 {
     player_data result;
     bitmap default_bitmap = ship_bitmap(AQUARII);
@@ -52,8 +52,8 @@ player_data new_player(int win_width, int win_height)
     result.kind = AQUARII;
 
     // Position in the centre of the initial screen
-    sprite_set_x(result.player_sprite, win_width / 2 - sprite_width(result.player_sprite) / 2);
-    sprite_set_y(result.player_sprite, win_height / 2 - sprite_height(result.player_sprite) / 2);
+    sprite_set_x(result.player_sprite, screen_width() / 2 - sprite_width(result.player_sprite) / 2);
+    sprite_set_y(result.player_sprite, screen_height() / 2 - sprite_height(result.player_sprite) / 2);
 
     result.fuel_pct = 0.5;
     result.score = 0;

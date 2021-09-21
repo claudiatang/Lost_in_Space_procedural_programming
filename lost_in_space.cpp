@@ -208,13 +208,10 @@ void draw_game(const game_data &game)
 
     draw_garbage(game.garbages);
 
-    draw_hud(game.player, game.power_ups, game.fuels, game.garbages, game.power_up_kinds);
+    draw_hud(game.player, game.power_ups, game.fuels, game.garbages, game.power_up_kinds, game.time.seconds_remained);
 
     draw_game_play_finish(game.game_finished, game.game_won);
 
-    draw_time_remained(game.time.seconds_remained, 600, 30);
-
-    //as well as the player who can move
     draw_player(game.player);
 }
 
@@ -347,6 +344,8 @@ game_data create_new_game(game_level &level)
     game.game_exit = false;
     game.game_finished = false;
     game.game_won = false;
+
+    game.player = new_player();
 
     return game;
 }

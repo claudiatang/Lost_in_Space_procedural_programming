@@ -16,13 +16,13 @@ bool if_level_unlocked(const program_manager &manager, const game_level &level)
     return if_unlocked;
 }
 
-void add_unlocked_level(program_manager &manager, const game_data game_accomplished)
+void add_unlocked_level(program_manager &manager)
 {
     bool add_new_unlocked = true;
 
     for (int i = 0; i < manager.level_unlocked.size(); i++)
     {
-        if (static_cast<int>(game_accomplished.level) + 1 == static_cast<int>(manager.level_unlocked[i]))
+        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.level_unlocked[i]))
         {
             add_new_unlocked = false;
         }
@@ -30,7 +30,7 @@ void add_unlocked_level(program_manager &manager, const game_data game_accomplis
 
     if (add_new_unlocked == true)
     {
-        manager.level_unlocked.push_back(static_cast<game_level>(static_cast<int>(game_accomplished.level) + 1));
+        manager.level_unlocked.push_back(static_cast<game_level>(static_cast<int>(manager.game.level) + 1));
     }
 }
 
@@ -42,17 +42,17 @@ void handle_select_level(const button &button_to_check, program_manager &manager
     {
         if (button_to_check.name == "level_one")
         {
-            manager.new_game_level = LEVEL_1;
+            manager.level = LEVEL_1;
             selected = true;
         }
         else if (button_to_check.name == "level_two")
         {
-            manager.new_game_level = LEVEL_2;
+            manager.level = LEVEL_2;
             selected = true;
         }
         else if (button_to_check.name == "level_three")
         {
-            manager.new_game_level = LEVEL_3;
+            manager.level = LEVEL_3;
             selected = true;
         }
     }
@@ -133,35 +133,35 @@ void run_level_selection(program_manager &manager)
 
 void run_game_play(program_manager &manager)
 {
-    game_data new_game = create_new_game(manager.new_game_level);
+    manager.game = create_new_game(manager.level);
 
-    new_game.player = new_player(screen_width(), screen_height());
+    //new_game.player = new_player(screen_width(), screen_height());
 
     //set all initial numbers of player power ups to be 0
-    for (int i = 0; i < new_game.player.player_power_ups.size(); i++)
+    for (int i = 0; i < manager.game.player.player_power_ups.size(); i++)
     {
-        new_game.player.player_power_ups[i].number = 0;
+        manager.game.player.player_power_ups[i].number = 0;
     }
 
-    while (!quit_requested() && !new_game.game_exit)
+    while (!quit_requested() && !manager.game.game_exit)
     {
         // Handle input to adjust player movement
         process_events();
-        handle_input(new_game.player);
+        handle_input(manager.game.player);
 
-        update_game(new_game);
+        update_game(manager.game);
 
         // Redraw everything
         clear_screen(COLOR_BLACK);
 
-        draw_game(new_game);
+        draw_game(manager.game);
 
         refresh_screen(60);
     }
 
-    if (new_game.game_won)
+    if (manager.game.game_won)
     {
-        add_unlocked_level(manager, new_game);
+        add_unlocked_level(manager);
     }
 
     for (int i = 0; i < manager.level_unlocked.size(); i++)
@@ -172,5 +172,24 @@ void run_game_play(program_manager &manager)
 
 void run_post_game(program_manager &manager)
 {
-    ;
+    while (!quit_requested())
+    {
+        clear_screen(COLOR_BLACK);
+        draw_text("Player Score: ", COLOR_ORANGE, 320, 360, option_to_screen());
+        draw_text(to_string(manager.game.player.score), COLOR_ORANGE, 640, 360, option_to_screen());
+        refresh_screen(60);
+    }
+}
+
+void run_program_manager(program_manager &manager)
+{
+    //write_line("before title screen");
+    run_title_screen();
+
+    run_level_selection(manager);
+
+    //write_line("exit level selection before game play");
+    run_game_play(manager);
+
+    run_post_game(manager);
 }
