@@ -34,9 +34,9 @@ void add_unlocked_level(program_manager &manager)
     }
 }
 
-void handle_select_level(const button &button_to_check, program_manager &manager, bool &selected)
+void handle_select_level(program_manager &manager, const button &button_to_check, bool &selected)
 {
-    selected = false;
+    //selected = false;
 
     if (mouse_clicked(LEFT_BUTTON) && loc_within_button(button_to_check, mouse_position()) && button_to_check.active)
     {
@@ -54,6 +54,25 @@ void handle_select_level(const button &button_to_check, program_manager &manager
         {
             manager.level = LEVEL_3;
             selected = true;
+        }
+    }
+}
+
+void handle_continue_exit(program_manager &manager, const button &button_to_check, bool &selected)
+{
+    if (mouse_clicked(LEFT_BUTTON) && loc_within_button(button_to_check, mouse_position()))
+    {
+        if (button_to_check.name == "continue game")
+        {
+            manager.continue_next_game = true;
+            selected = true;
+            write_line("continue set to true, selected set to true");
+        }
+        else if (button_to_check.name == "exit game")
+        {
+            manager.continue_next_game = false;
+            selected = true;
+            write_line("continue set to false, selected set to true");
         }
     }
 }
@@ -104,22 +123,22 @@ void run_level_selection(program_manager &manager)
     write_line("step into level selection");
     bool level_selected = false;
 
-    button level_one = create_new_button("level", "_1", 90, 185, if_level_unlocked(manager, LEVEL_1), "level_one");
-    button level_two = create_new_button("level", "_2", 495, 185, if_level_unlocked(manager, LEVEL_2), "level_two");
-    button level_three = create_new_button("level", "_3", 900, 185, if_level_unlocked(manager, LEVEL_3), "level_three");
+    button level_one = level_selection_button("level", "_1", 90, 185, if_level_unlocked(manager, LEVEL_1), "level_one");
+    button level_two = level_selection_button("level", "_2", 495, 185, if_level_unlocked(manager, LEVEL_2), "level_two");
+    button level_three = level_selection_button("level", "_3", 900, 185, if_level_unlocked(manager, LEVEL_3), "level_three");
 
     while (!quit_requested() && !level_selected)
     {
 
         process_events();
-        handle_select_level(level_one, manager, level_selected);
+        handle_select_level(manager, level_one, level_selected);
         if (!level_selected)
         {
-            handle_select_level(level_two, manager, level_selected);
+            handle_select_level(manager, level_two, level_selected);
         }
         if (!level_selected)
         {
-            handle_select_level(level_three, manager, level_selected);
+            handle_select_level(manager, level_three, level_selected);
         }
 
         clear_screen(COLOR_BLACK);
@@ -129,6 +148,8 @@ void run_level_selection(program_manager &manager)
         draw_button(level_three);
         refresh_screen(60);
     }
+
+    write_line("selected level " + to_string(manager.level));
 }
 
 void run_game_play(program_manager &manager)
@@ -172,11 +193,32 @@ void run_game_play(program_manager &manager)
 
 void run_post_game(program_manager &manager)
 {
-    while (!quit_requested())
+    bool continue_exit_selected = false;
+
+    button continue_game = continue_exit_button("continue_button", 0, 0, "continue game");
+    button exit_game = continue_exit_button("exit_button", 640, 360, "exit game");
+
+    write_line(camera_x());
+    write_line(camera_y());
+
+    while (!quit_requested() && !continue_exit_selected)
     {
+        process_events();
+        handle_continue_exit(manager, continue_game, continue_exit_selected);
+        if (!continue_exit_selected)
+        {
+            handle_continue_exit(manager, exit_game, continue_exit_selected);
+        }
+
         clear_screen(COLOR_BLACK);
+
+        move_camera_to(0, 0);
+
         draw_text("Player Score: ", COLOR_ORANGE, 320, 360, option_to_screen());
         draw_text(to_string(manager.game.player.score), COLOR_ORANGE, 640, 360, option_to_screen());
+        draw_button(continue_game);
+        draw_button(exit_game);
+
         refresh_screen(60);
     }
 }
@@ -186,10 +228,13 @@ void run_program_manager(program_manager &manager)
     //write_line("before title screen");
     run_title_screen();
 
-    run_level_selection(manager);
+    while (!quit_requested() && manager.continue_next_game)
+    {
+        run_level_selection(manager);
 
-    //write_line("exit level selection before game play");
-    run_game_play(manager);
+        //write_line("exit level selection before game play");
+        run_game_play(manager);
 
-    run_post_game(manager);
+        run_post_game(manager);
+    }
 }

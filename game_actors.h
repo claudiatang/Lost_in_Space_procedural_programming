@@ -143,7 +143,7 @@ void draw_game_fuels(const vector<fuel_data> &fuels_to_draw);
 
 garbage_data new_garbage(double x, double y, const garbage_kind &kind);
 
-void draw_garbage(const vector<garbage_data> &garbages_to_draw);
+void draw_garbages(const vector<garbage_data> &garbages_to_draw);
 
 void update_actor_sprite(sprite &sprite_to_update);
 

@@ -1,7 +1,21 @@
 #include "splashkit.h"
 #include "user_interface.h"
 
-button create_new_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name)
+button continue_exit_button(string bitmap_name, double x, double y, string button_name)
+{
+    button new_button;
+    new_button.image = bitmap_named(bitmap_name);
+    new_button.name = button_name;
+
+    new_button.top_left.x = x;
+    new_button.top_left.y = y;
+    new_button.bottom_right.x = x + bitmap_width(new_button.image);
+    new_button.bottom_right.y = y + bitmap_height(new_button.image);
+
+    return new_button;
+}
+
+button level_selection_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name)
 {
     button new_button;
     new_button.active = is_active;
@@ -175,11 +189,11 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
     bitmap hud_bottom = bitmap_named("hud_bgd_btm");
 
     int hud_bgd_top_width = bitmap_width(hud_top);
-    int hub_bgd_btm_width = bitmap_width(hud_bottom);
+    //int hub_bgd_btm_width = bitmap_width(hud_bottom);
     int hub_bgd_btm_height = bitmap_height(hud_bottom);
 
     draw_bitmap(hud_top, (screen_width() - hud_bgd_top_width) / 2, 10, option_to_screen());
-    draw_bitmap(hud_bottom, (screen_width() - hub_bgd_btm_width) / 2, screen_height() - hub_bgd_btm_height - 15, option_to_screen());
+    //draw_bitmap(hud_bottom, (screen_width() - hub_bgd_btm_width) / 2, screen_height() - hub_bgd_btm_height - 15, option_to_screen());
 
     draw_pct_bar(player, 20, 30);
 

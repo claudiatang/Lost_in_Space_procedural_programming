@@ -208,7 +208,7 @@ garbage_data new_garbage(double x, double y, const garbage_kind &kind)
     return result;
 }
 
-void draw_garbage(const vector<garbage_data> &garbages_to_draw)
+void draw_garbages(const vector<garbage_data> &garbages_to_draw)
 {
     for (int i = 0; i < garbages_to_draw.size(); i++)
     {

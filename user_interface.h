@@ -18,7 +18,9 @@ struct button
     bool active;
 };
 
-button create_new_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name);
+button continue_exit_button(string bitmap_name, double x, double y, string button_name);
+
+button level_selection_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name);
 
 void draw_button(const button &button_to_draw);
 

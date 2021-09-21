@@ -76,8 +76,8 @@ void update_player(player_data &player_to_update)
     // Test edge of screen boundaries to adjust the camera
     double left_edge = camera_x() + SCREEN_BORDER;
     double right_edge = left_edge + screen_width() - 2 * SCREEN_BORDER;
-    double top_edge = camera_y() + 3.6 * SCREEN_BORDER;                      //adjust top edge according to top HUD height, 1.2 is resulted from testing
-    double bottom_edge = camera_y() + screen_height() - 2.5 * SCREEN_BORDER; //adjust bottom edge according to top Bottom HUD height, 1.8 is resulted from testing
+    double top_edge = camera_y() + 3.6 * SCREEN_BORDER;                //adjust top edge according to top HUD height, 1.2 is resulted from testing
+    double bottom_edge = camera_y() + screen_height() - SCREEN_BORDER; //adjust bottom edge according to top Bottom HUD height, 1.8 is resulted from testing
 
     // Get the center of the player
     point_2d sprite_center = center_point(player_to_update.player_sprite);

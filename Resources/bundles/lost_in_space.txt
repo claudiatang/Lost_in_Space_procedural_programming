@@ -42,6 +42,8 @@ BITMAP,garbage_tv,garbage_tv.png
 BITMAP,title_screen_bgd,title_screen_bgd.png
 BITMAP,title_font,title_font.png
 BITMAP,space_background_1,space_background_1.png
+BITMAP,space_background_2,space_background_2.png
+BITMAP,space_background_3,space_background_3.png
 BITMAP,empty,empty.png
 BITMAP,hud_bgd,hud_bgd.png
 BITMAP,hud_bgd_btm,hud_bgd_btm.png
@@ -58,6 +60,8 @@ BITMAP,level_1_active,level_1_active.png
 BITMAP,level_2_active,level_2_active.png
 BITMAP,level_3_active,level_3_active.png
 BITMAP,level_inactive,level_inactive.png
+BITMAP,continue_button,continue_button.png
+BITMAP,exit_button,exit_button.png
 // Other
 BITMAP,box,box.png
 BITMAP,full,full.png

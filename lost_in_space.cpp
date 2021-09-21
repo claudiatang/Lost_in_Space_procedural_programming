@@ -206,7 +206,7 @@ void draw_game(const game_data &game)
 
     draw_game_fuels(game.fuels);
 
-    draw_garbage(game.garbages);
+    draw_garbages(game.garbages);
 
     draw_hud(game.player, game.power_ups, game.fuels, game.garbages, game.power_up_kinds, game.time.seconds_remained);
 
