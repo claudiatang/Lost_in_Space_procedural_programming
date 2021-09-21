@@ -147,4 +147,22 @@ void draw_garbages(const vector<garbage_data> &garbages_to_draw);
 
 void update_actor_sprite(sprite &sprite_to_update);
 
+/**
+ * Delete a power up from the game
+ * according to passed in index
+ * 
+ * @param game    the game to delete the power up from
+ * @param index   index of the power up to delete
+ */
+void delete_game_power_up(vector<power_up_data> &game_power_ups, int indx);
+
+/**
+ * Delete a fuel from the game
+ * according to passed in index
+ * 
+ * @param game    the game to delete fuel from
+ * @param indx    index of fuel to delete
+ */
+void delete_game_fuel(vector<fuel_data> &game_fuels, int indx);
+
 #endif

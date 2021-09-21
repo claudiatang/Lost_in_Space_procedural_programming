@@ -87,24 +87,6 @@ void add_player_fuel(player_data &player, fuel_kind &kind);
 
 void reduce_player_fuel(player_data &player, garbage_kind &kind);
 
-/**
- * Delete a power up from the game
- * according to passed in index
- * 
- * @param game    the game to delete the power up from
- * @param index   index of the power up to delete
- */
-void delete_game_power_up(game_data &game, int indx);
-
-/**
- * Delete a fuel from the game
- * according to passed in index
- * 
- * @param game    the game to delete fuel from
- * @param indx    index of fuel to delete
- */
-void delete_game_fuel(game_data &game, int indx);
-
 void update_game_status(game_data &game);
 
 /**

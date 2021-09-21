@@ -35,7 +35,7 @@ string format_time(int &seconds);
  * @param x        the top left corner x location of pct bar  
  * @param y        the top left corner y location of pct bar
  */
-void draw_pct_bar(const player_data &player, double x, double y);
+void draw_pct_bar(const double &fuel_pct, double x, double y);
 
 /**
  * Draw the icon for indicating the kind of ship being selected.
@@ -81,14 +81,14 @@ void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data
  * @param x               
  * @param y 
  */
-void draw_power_up_icon(const power_up_kind &power_up_kind, int power_up_num, double x, double y);
+void draw_power_up_summary(const power_up_kind &power_up_kind, int power_up_num, double x, double y);
 
 /**
  * Draw player score on the screen
  * 
  * @param player game player
  */
-void draw_score(const player_data &player, double x, double y);
+void draw_score(const int &player_score, double x, double y);
 
 void draw_time_remained(int seconds_remained, double x, double y);
 

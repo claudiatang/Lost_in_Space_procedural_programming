@@ -62,28 +62,6 @@ void reduce_player_fuel(player_data &player, garbage_kind &kind)
     }
 }
 
-void delete_game_power_up(game_data &game, int indx)
-{
-    for (int k = indx; k < game.power_ups.size() - 1; k++)
-    {
-        game.power_ups[k] = game.power_ups[k + 1];
-    }
-
-    game.power_ups.pop_back();
-}
-
-void delete_game_fuel(game_data &game, int indx)
-{
-    //write_line("pass in indx [" + to_string(indx) + "]");
-    for (int j = indx; j < game.fuels.size() - 1; j++)
-    {
-        //write_line("j " + to_string(j));
-        game.fuels[j] = game.fuels[j + 1];
-    }
-
-    game.fuels.pop_back();
-}
-
 void update_game_status(game_data &game)
 {
     if (game.time.seconds_remained <= 0 || game.player.fuel_pct <= 0 || game.power_ups.size() <= 0)
@@ -129,7 +107,7 @@ void update_game(game_data &game)
             {
                 add_player_power_up(game.player, game.power_ups[i].kind);
                 //write_line("added player power up.");
-                delete_game_power_up(game, i);
+                delete_game_power_up(game.power_ups, i);
             }
         }
 
@@ -141,7 +119,7 @@ void update_game(game_data &game)
             if (sprite_collision(game.fuels[i].fuel_sprite, game.player.player_sprite))
             {
                 add_player_fuel(game.player, game.fuels[i].kind);
-                delete_game_fuel(game, i);
+                delete_game_fuel(game.fuels, i);
             }
         }
 

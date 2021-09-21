@@ -216,6 +216,12 @@ void run_post_game(program_manager &manager)
 
         draw_text("Player Score: ", COLOR_ORANGE, 320, 360, option_to_screen());
         draw_text(to_string(manager.game.player.score), COLOR_ORANGE, 640, 360, option_to_screen());
+
+        for (int i = 0; i < manager.game.power_up_kinds.size(); i++)
+        {
+            draw_power_up_summary(manager.game.power_up_kinds[i], player_power_up_number(manager.game.player, manager.game.power_up_kinds[i]), 150, screen_height() / 2 + i * 50);
+        }
+
         draw_button(continue_game);
         draw_button(exit_game);
 

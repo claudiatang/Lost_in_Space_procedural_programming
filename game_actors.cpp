@@ -245,3 +245,25 @@ void update_actor_sprite(sprite &sprite_to_update)
         sprite_set_dx(sprite_to_update, (-1) * rnd(0, 2));
     }
 }
+
+void delete_game_power_up(vector<power_up_data> &game_power_ups, int indx)
+{
+    for (int k = indx; k < game_power_ups.size() - 1; k++)
+    {
+        game_power_ups[k] = game_power_ups[k + 1];
+    }
+
+    game_power_ups.pop_back();
+}
+
+void delete_game_fuel(vector<fuel_data> &game_fuels, int indx)
+{
+    //write_line("pass in indx [" + to_string(indx) + "]");
+    for (int j = indx; j < game_fuels.size() - 1; j++)
+    {
+        //write_line("j " + to_string(j));
+        game_fuels[j] = game_fuels[j + 1];
+    }
+
+    game_fuels.pop_back();
+}
