@@ -168,8 +168,8 @@ void handle_input(player_data &player)
         sprite_set_rotation(player.player_sprite, rotation + PLAYER_ROTATE_SPEED);
 
     // Increase speed with up/down keys - typed to give step increases
-    if (key_typed(S_KEY))
+    if (key_down(S_KEY))
         sprite_set_dx(player.player_sprite, dx - PLAYER_SPEED);
-    if (key_typed(W_KEY))
+    if (key_down(W_KEY))
         sprite_set_dx(player.player_sprite, dx + PLAYER_SPEED);
 }

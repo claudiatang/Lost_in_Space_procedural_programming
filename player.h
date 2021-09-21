@@ -7,8 +7,8 @@
 
 using namespace std;
 
-#define PLAYER_SPEED 1.5
-#define PLAYER_ROTATE_SPEED 3
+#define PLAYER_SPEED 0.05
+#define PLAYER_ROTATE_SPEED 2
 #define SCREEN_BORDER 50
 
 /**

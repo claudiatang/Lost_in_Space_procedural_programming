@@ -106,36 +106,36 @@ void draw_game_power_ups(const vector<power_up_data> &power_ups_to_draw)
     }
 }
 
-void update_power_up(power_up_data &power_up_to_update)
-{
-    //Move power-up sprite according to sprite x and y velocity set in new power-up function
-    update_sprite(power_up_to_update.power_up_sprite);
+// void update_power_up(power_up_data &power_up_to_update)
+// {
+//     //Move power-up sprite according to sprite x and y velocity set in new power-up function
+//     update_sprite(power_up_to_update.power_up_sprite);
 
-    double left_bound = camera_x() - 25 * SCREEN_BORDER;
-    double right_bound = camera_x() + screen_width() + 25 * SCREEN_BORDER;
-    double top_bound = camera_y() - 25 * SCREEN_BORDER;
-    double bottom_bound = camera_y() + screen_height() + 25 * SCREEN_BORDER;
+//     double left_bound = camera_x() - 25 * SCREEN_BORDER;
+//     double right_bound = camera_x() + screen_width() + 25 * SCREEN_BORDER;
+//     double top_bound = camera_y() - 25 * SCREEN_BORDER;
+//     double bottom_bound = camera_y() + screen_height() + 25 * SCREEN_BORDER;
 
-    point_2d sprite_center = center_point(power_up_to_update.power_up_sprite);
+//     point_2d sprite_center = center_point(power_up_to_update.power_up_sprite);
 
-    if (sprite_center.y < top_bound || sprite_center.y < -1 * screen_height())
-    {
-        sprite_set_dy(power_up_to_update.power_up_sprite, rnd(0, 2));
-    }
-    else if (sprite_center.y > bottom_bound || sprite_center.y > 2 * screen_height())
-    {
-        sprite_set_dy(power_up_to_update.power_up_sprite, (-1) * rnd(0, 2));
-    }
+//     if (sprite_center.y < top_bound || sprite_center.y < (-1) * screen_height())
+//     {
+//         sprite_set_dy(power_up_to_update.power_up_sprite, rnd(0, 2));
+//     }
+//     else if (sprite_center.y > bottom_bound || sprite_center.y > 2 * screen_height())
+//     {
+//         sprite_set_dy(power_up_to_update.power_up_sprite, (-1) * rnd(0, 2));
+//     }
 
-    if (sprite_center.x < left_bound || sprite_center.x < -1 * screen_width())
-    {
-        sprite_set_dx(power_up_to_update.power_up_sprite, rnd(0, 2));
-    }
-    else if (sprite_center.x > right_bound || sprite_center.x < 2 * screen_width())
-    {
-        sprite_set_dx(power_up_to_update.power_up_sprite, (-1) * rnd(0, 2));
-    }
-}
+//     if (sprite_center.x < left_bound || sprite_center.x < (-1) * screen_width())
+//     {
+//         sprite_set_dx(power_up_to_update.power_up_sprite, rnd(0, 2));
+//     }
+//     else if (sprite_center.x > right_bound || sprite_center.x < 2 * screen_width())
+//     {
+//         sprite_set_dx(power_up_to_update.power_up_sprite, (-1) * rnd(0, 2));
+//     }
+// }
 
 fuel_data new_fuel(double x, double y, const fuel_kind &kind)
 {
@@ -220,10 +220,10 @@ void update_actor_sprite(sprite &sprite_to_update)
 {
     update_sprite(sprite_to_update);
 
-    double left_bound = -1.5 * SCREEN_BORDER;
-    double right_bound = 1.5 * SCREEN_BORDER;
-    double top_bound = -1.5 * SCREEN_BORDER;
-    double bottom_bound = 1.5 * SCREEN_BORDER;
+    double left_bound = camera_x() - 50 * SCREEN_BORDER;
+    double right_bound = camera_x() + screen_width() + 50 * SCREEN_BORDER;
+    double top_bound = camera_y() - 50 * SCREEN_BORDER;
+    double bottom_bound = camera_y() + screen_height() + 50 * SCREEN_BORDER;
 
     point_2d sprite_center = center_point(sprite_to_update);
 

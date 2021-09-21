@@ -74,10 +74,10 @@ void delete_game_power_up(game_data &game, int indx)
 
 void delete_game_fuel(game_data &game, int indx)
 {
-    write_line("pass in indx [" + to_string(indx) + "]");
+    //write_line("pass in indx [" + to_string(indx) + "]");
     for (int j = indx; j < game.fuels.size() - 1; j++)
     {
-        write_line("j " + to_string(j));
+        //write_line("j " + to_string(j));
         game.fuels[j] = game.fuels[j + 1];
     }
 
@@ -122,7 +122,8 @@ void update_game(game_data &game)
         for (int i = 0; i < game.power_ups.size(); i++)
         {
             //write_line("power up index [" + to_string(i) + "]");
-            update_power_up(game.power_ups[i]);
+            //update_power_up(game.power_ups[i]);
+            update_actor_sprite(game.power_ups[i].power_up_sprite);
 
             if (sprite_collision(game.power_ups[i].power_up_sprite, game.player.player_sprite))
             {
