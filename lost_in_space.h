@@ -155,6 +155,8 @@ vector<fuel_kind> game_fuel_kinds(game_level &level);
  */
 void add_game_fuels(game_data &game);
 
+void set_player_ship_kinds(const game_level &level, player_data &player);
+
 /**
  * Create a new game
  * 

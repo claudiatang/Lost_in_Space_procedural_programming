@@ -47,7 +47,7 @@ void draw_pct_bar(const double &fuel_pct, double x, double y);
  * @param x                the top left corner x location of ship icon
  * @param y                the top left corner y location of ship icon
  */
-void draw_ship_icon(const player_data &player, ship_kind icon_ship_kind, double x, double y);
+void draw_ship_icon(const player_data &player, const ship_kind &kind, bool ship_unlocked, double x, double y);
 
 /**
  * Takes a sprite and mini map width and height information

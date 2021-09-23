@@ -86,7 +86,6 @@ void update_game_status(game_data &game)
 
 void update_game(game_data &game)
 {
-
     //update game time
     if (!game.game_finished && !game.game_won && !game.game_exit)
     {
@@ -106,7 +105,7 @@ void update_game(game_data &game)
             if (sprite_collision(game.power_ups[i].power_up_sprite, game.player.player_sprite))
             {
                 add_player_power_up(game.player, game.power_ups[i].kind);
-                //write_line("added player power up.");
+                play_sound_effect("collect_1");
                 delete_game_power_up(game.power_ups, i);
             }
         }
@@ -119,6 +118,7 @@ void update_game(game_data &game)
             if (sprite_collision(game.fuels[i].fuel_sprite, game.player.player_sprite))
             {
                 add_player_fuel(game.player, game.fuels[i].kind);
+                play_sound_effect("collect_2");
                 delete_game_fuel(game.fuels, i);
             }
         }
@@ -131,6 +131,10 @@ void update_game(game_data &game)
             if (sprite_collision(game.garbages[i].garbage_sprite, game.player.player_sprite))
             {
                 reduce_player_fuel(game.player, game.garbages[i].kind);
+                if (!sound_effect_playing("be_hit"))
+                {
+                    play_sound_effect("be_hit");
+                }
             }
         }
     }
@@ -309,6 +313,29 @@ void add_game_garbages(game_data &game)
     }
 }
 
+void set_player_ship_kinds(const game_level &level, player_data &player)
+{
+    switch (level)
+    {
+    case LEVEL_1:
+        player.unlocked_ship_kinds.push_back(AQUARII);
+        break;
+    case LEVEL_2:
+        player.unlocked_ship_kinds.push_back(AQUARII);
+        player.unlocked_ship_kinds.push_back(GLIESE);
+        break;
+    case LEVEL_3:
+        player.unlocked_ship_kinds.push_back(AQUARII);
+        player.unlocked_ship_kinds.push_back(GLIESE);
+        player.unlocked_ship_kinds.push_back(PEGASI);
+        break;
+    default:
+        player.unlocked_ship_kinds.push_back(AQUARII);
+        write_line("!!!set player ship kinds wrong!!!");
+        break;
+    }
+}
+
 game_data create_new_game(game_level &level)
 {
     game_data game;
@@ -325,6 +352,7 @@ game_data create_new_game(game_level &level)
     game.game_won = false;
 
     game.player = new_player();
+    set_player_ship_kinds(game.level, game.player);
 
     return game;
 }

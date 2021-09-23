@@ -26,5 +26,10 @@ int main()
 
     run_program_manager(new_manager);
 
+    free_all_music();
+    free_all_sound_effects();
+    free_all_timers();
+    free_all_sprites();
+
     return 0;
 }

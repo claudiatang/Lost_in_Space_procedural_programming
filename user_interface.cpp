@@ -79,23 +79,27 @@ void draw_pct_bar(const double &fuel_pct, double x, double y)
     draw_bitmap(green_bar_bubbles, x + 60, y - 5, option_part_bmp(0, 0, fuel_pct * bitmap_width(green_bar_bubbles), bitmap_height(green_bar_bubbles), option_to_screen()));
 }
 
-void draw_ship_icon(const player_data &player, ship_kind ship_kin, double x, double y)
+void draw_ship_icon(const player_data &player, const ship_kind &kind, bool ship_unlocked, double x, double y)
 {
-    //decide whether to render colourful icon or greyed icon
+    //decide whether to render colorful icon or greyed icon
     bitmap ship_icon;
-    if (player.kind == ship_kin)
+    if (player.kind == kind && ship_unlocked)
     {
-        ship_icon = bitmap_named(ship_icon_string(ship_kin) + "color");
+        ship_icon = bitmap_named(ship_icon_string(kind) + "color");
+    }
+    else if (ship_unlocked)
+    {
+        ship_icon = bitmap_named(ship_icon_string(kind) + "grey");
     }
     else
     {
-        ship_icon = bitmap_named(ship_icon_string(ship_kin) + "grey");
+        ship_icon = bitmap_named("ship_icon_locked");
     }
 
     draw_bitmap(ship_icon, x, y, option_to_screen());
     //indicate keyboard input for the icon and give a black shadow effect
-    draw_text(std::to_string(static_cast<int>(ship_kin) + 1), COLOR_BLACK, "hackbotfont", 25, x + 5, y + 5, option_to_screen()); //the shadow of the following line
-    draw_text(std::to_string(static_cast<int>(ship_kin) + 1), COLOR_WHITE_SMOKE, "hackbotfont", 25, x + 2, y + 2, option_to_screen());
+    draw_text(std::to_string(static_cast<int>(kind) + 1), COLOR_BLACK, "hackbotfont", 25, x + 5, y + 5, option_to_screen()); //the shadow of the following line
+    draw_text(std::to_string(static_cast<int>(kind) + 1), COLOR_WHITE_SMOKE, "hackbotfont", 25, x + 2, y + 2, option_to_screen());
 }
 
 point_2d mini_map_coordinate(const sprite &actor, int map_width, int map_height)
@@ -186,20 +190,20 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
 void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds, int seconds_remained)
 {
     bitmap hud_top = bitmap_named("hud_bgd");
-    bitmap hud_bottom = bitmap_named("hud_bgd_btm");
+    //bitmap hud_bottom = bitmap_named("hud_bgd_btm");
 
     int hud_bgd_top_width = bitmap_width(hud_top);
     //int hub_bgd_btm_width = bitmap_width(hud_bottom);
-    int hub_bgd_btm_height = bitmap_height(hud_bottom);
+    //int hub_bgd_btm_height = bitmap_height(hud_bottom);
 
     draw_bitmap(hud_top, (screen_width() - hud_bgd_top_width) / 2, 10, option_to_screen());
     //draw_bitmap(hud_bottom, (screen_width() - hub_bgd_btm_width) / 2, screen_height() - hub_bgd_btm_height - 15, option_to_screen());
 
     draw_pct_bar(player.fuel_pct, 20, 30);
 
-    draw_ship_icon(player, AQUARII, 20, 80);
-    draw_ship_icon(player, GLIESE, 120, 80);
-    draw_ship_icon(player, PEGASI, 220, 80);
+    draw_ship_icon(player, AQUARII, if_ship_unlocked(player, AQUARII), 20, 80);
+    draw_ship_icon(player, GLIESE, if_ship_unlocked(player, GLIESE), 120, 80);
+    draw_ship_icon(player, PEGASI, if_ship_unlocked(player, PEGASI), 220, 80);
 
     draw_score(player.score, 450, 30);
     draw_time_remained(seconds_remained, 600, 30);

@@ -47,6 +47,7 @@ BITMAP,space_background_3,space_background_3.png
 BITMAP,empty,empty.png
 BITMAP,hud_bgd,hud_bgd.png
 BITMAP,hud_bgd_btm,hud_bgd_btm.png
+BITMAP,scoreboard_bgd,scoreboard_bgd.png
 BITMAP,icon_bgd,icon_bgd.png
 BITMAP,green_bar_bubbles,green_bar_bubbles.png
 BITMAP,aquarri_icon_color,aquarri_icon_color.png
@@ -55,6 +56,7 @@ BITMAP,gliese_icon_color,gliese_icon_color.png
 BITMAP,gliese_icon_grey,gliese_icon_grey.png
 BITMAP,pegasi_icon_color,pegasi_icon_color.png
 BITMAP,pegasi_icon_grey,pegasi_icon_grey.png
+BITMAP,ship_icon_locked,ship_icon_locked.png
 // BUTTON
 BITMAP,level_1_active,level_1_active.png
 BITMAP,level_2_active,level_2_active.png
@@ -66,5 +68,15 @@ BITMAP,exit_button,exit_button.png
 BITMAP,box,box.png
 BITMAP,full,full.png
 ANIM,coins,coin_animation.txt
-FONT,gooddogfont,GOODDP__.TTF
 FONT,hackbotfont,Hackbot.otf
+// Audio
+SOUND,be_hit,be_hit.wav
+SOUND,collect_1,collect_01.wav
+SOUND,collect_2,collect_02.wav
+SOUND,collect_3,collect_03.wav
+SOUND,win_1,win_01.wav
+SOUND,win_2,win_02.wav
+SOUND,win_3,win_03.wav
+SOUND,lose,lose.wav
+MUSIC,macross_bgm,macross_bgm.ogg
+MUSIC,title_music,title_music.mp3

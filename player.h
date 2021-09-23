@@ -53,6 +53,7 @@ struct player_data
     ship_kind kind;
     double fuel_pct;
     vector<player_power_up> player_power_ups;
+    vector<ship_kind> unlocked_ship_kinds;
 };
 
 /**
@@ -73,6 +74,8 @@ bitmap ship_bitmap(ship_kind kind);
  * @return string   a string of the ship kind
  */
 string ship_icon_string(ship_kind kind);
+
+bool if_ship_unlocked(const player_data &player, const ship_kind &kind_to_check);
 
 /**
  * Creates a new player in the centre of the screen with the default ship.

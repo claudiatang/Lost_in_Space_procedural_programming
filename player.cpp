@@ -33,6 +33,21 @@ string ship_icon_string(ship_kind kind)
     }
 }
 
+bool if_ship_unlocked(const player_data &player, const ship_kind &kind_to_check)
+{
+    bool unlocked = false;
+
+    for (int i = 0; i < player.unlocked_ship_kinds.size(); i++)
+    {
+        if (player.unlocked_ship_kinds[i] == kind_to_check)
+        {
+            unlocked = true;
+        }
+    }
+
+    return unlocked;
+}
+
 player_data new_player()
 {
     player_data result;
@@ -55,7 +70,7 @@ player_data new_player()
     sprite_set_x(result.player_sprite, screen_width() / 2 - sprite_width(result.player_sprite) / 2);
     sprite_set_y(result.player_sprite, screen_height() / 2 - sprite_height(result.player_sprite) / 2);
 
-    result.fuel_pct = 0.5;
+    result.fuel_pct = 0.75;
     result.score = 0;
 
     return result;
@@ -152,9 +167,9 @@ void handle_input(player_data &player)
     // Allow the player to switch ships
     if (key_typed(NUM_1_KEY))
         player_switch_ship(player, AQUARII);
-    if (key_typed(NUM_2_KEY))
+    if (key_typed(NUM_2_KEY) && if_ship_unlocked(player, GLIESE))
         player_switch_ship(player, GLIESE);
-    if (key_typed(NUM_3_KEY))
+    if (key_typed(NUM_3_KEY) && if_ship_unlocked(player, PEGASI))
         player_switch_ship(player, PEGASI);
 
     // Handle movement - rotating left/right and moving forward/back

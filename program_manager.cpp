@@ -98,6 +98,7 @@ program_manager create_new_manager()
 
 void run_title_screen()
 {
+    write_line("step into title");
     //int title_seconds;
     timer title_timer = create_timer("Title Timer");
     bitmap title_bgd = bitmap_named("title_screen_bgd");
@@ -105,12 +106,18 @@ void run_title_screen()
 
     start_timer("Title Timer");
 
-    while (!quit_requested() && timer_ticks(title_timer) < 3000)
+    play_music("title_music");
+
+    while (!quit_requested() && timer_ticks(title_timer) < 7500 && !key_typed(RETURN_KEY))
     {
+        process_events();
         clear_screen(COLOR_BLACK);
+        //write_line("step into title while loop");
 
         draw_bitmap(title_bgd, 0, 0);
         draw_bitmap(title_font, screen_width() / 2 - bitmap_width(title_font) / 2, screen_height() / 2 - bitmap_height(title_font) / 2);
+        draw_text("Press 'Enter' to Skip", COLOR_BLACK, "hackbotfont", 25, 450, 650);
+        draw_text("Press 'Enter' to Skip", COLOR_ALICE_BLUE, "hackbotfont", 25, 453, 653);
 
         refresh_screen(60);
     }
@@ -155,8 +162,8 @@ void run_level_selection(program_manager &manager)
 void run_game_play(program_manager &manager)
 {
     manager.game = create_new_game(manager.level);
-
-    //new_game.player = new_player(screen_width(), screen_height());
+    music game_bgm = music_named("macross_bgm");
+    bool finish_sound_played = false;
 
     //set all initial numbers of player power ups to be 0
     for (int i = 0; i < manager.game.player.player_power_ups.size(); i++)
@@ -166,6 +173,35 @@ void run_game_play(program_manager &manager)
 
     while (!quit_requested() && !manager.game.game_exit)
     {
+        if (!music_playing() && !manager.game.game_finished)
+        {
+            play_music(game_bgm, 1, 0.9);
+        }
+        else if (manager.game.game_finished)
+        {
+            fade_music_out(manager.game.time.seconds_elapsed * 1000 + 1000 - timer_ticks(manager.game.time.game_timer));
+            if (manager.game.game_won && !sound_effect_playing("win_1") && !finish_sound_played)
+            {
+                finish_sound_played = true;
+                play_sound_effect("win_1");
+            }
+            else if (!sound_effect_playing("lose") && !finish_sound_played)
+            {
+                finish_sound_played = true;
+                play_sound_effect("lose");
+            }
+        }
+
+        if (sound_effect_playing("be_hit") || sound_effect_playing("collect_1") || sound_effect_playing("collect_2"))
+        {
+            set_music_volume(0.1);
+        }
+        else
+        {
+            set_music_volume(0.9);
+        }
+
+        //manage_game_play_audio(manager, game_bgm, finish_sound_played);
         // Handle input to adjust player movement
         process_events();
         handle_input(manager.game.player);
@@ -195,8 +231,8 @@ void run_post_game(program_manager &manager)
 {
     bool continue_exit_selected = false;
 
-    button continue_game = continue_exit_button("continue_button", 0, 0, "continue game");
-    button exit_game = continue_exit_button("exit_button", 640, 360, "exit game");
+    button continue_game = continue_exit_button("continue_button", 250, 600, "continue game");
+    button exit_game = continue_exit_button("exit_button", 840, 600, "exit game");
 
     write_line(camera_x());
     write_line(camera_y());
@@ -214,12 +250,14 @@ void run_post_game(program_manager &manager)
 
         move_camera_to(0, 0);
 
-        draw_text("Player Score: ", COLOR_ORANGE, 320, 360, option_to_screen());
-        draw_text(to_string(manager.game.player.score), COLOR_ORANGE, 640, 360, option_to_screen());
+        draw_bitmap("title_screen_bgd", 0, 0);
+        draw_bitmap("scoreboard_bgd", 128, 60, option_to_screen());
+        draw_text("Player Score: ", COLOR_ORANGE, "hackbotfont", 50, 320, 360, option_to_screen());
+        draw_text(to_string(manager.game.player.score), COLOR_ORANGE, "hackbotfont", 50, 640, 360, option_to_screen());
 
         for (int i = 0; i < manager.game.power_up_kinds.size(); i++)
         {
-            draw_power_up_summary(manager.game.power_up_kinds[i], player_power_up_number(manager.game.player, manager.game.power_up_kinds[i]), 150, screen_height() / 2 + i * 50);
+            draw_power_up_summary(manager.game.power_up_kinds[i], player_power_up_number(manager.game.player, manager.game.power_up_kinds[i]), 150, 120 + i * 150);
         }
 
         draw_button(continue_game);
