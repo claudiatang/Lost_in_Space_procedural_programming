@@ -59,6 +59,7 @@ BITMAP,gliese_icon_grey,gliese_icon_grey.png
 BITMAP,pegasi_icon_color,pegasi_icon_color.png
 BITMAP,pegasi_icon_grey,pegasi_icon_grey.png
 BITMAP,ship_icon_locked,ship_icon_locked.png
+BITMAP,ship_icon_locked_02,ship_icon_locked_02.png
 // BUTTON
 BITMAP,level_1_active,level_1_active.png
 BITMAP,level_2_active,level_2_active.png

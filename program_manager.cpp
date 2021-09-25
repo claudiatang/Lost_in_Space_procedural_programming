@@ -22,7 +22,7 @@ void add_unlocked_level(program_manager &manager)
 
     for (int i = 0; i < manager.levels_unlocked.size(); i++)
     {
-        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.levels_unlocked[i]))
+        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.levels_unlocked[i]) || static_cast<int>(manager.game.level) > 1)
         {
             add_new_unlocked = false;
         }
@@ -40,7 +40,7 @@ void add_unlocked_ship(program_manager &manager, bool &play_unlock_anim)
 
     for (int i = 0; i < manager.ships_unlocked.size(); i++)
     {
-        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.ships_unlocked[i]))
+        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.ships_unlocked[i]) || static_cast<int>(manager.game.level) > 1)
         {
             add_new_unlocked = false;
         }
@@ -193,7 +193,7 @@ void run_level_selection(program_manager &manager)
 
 void run_game_play(program_manager &manager)
 {
-    manager.game = create_new_game(manager.level);
+    manager.game = create_new_game(manager.level, manager.ships_unlocked);
     music game_bgm = music_named("macross_bgm");
     bool finish_sound_played = false;
 
@@ -262,7 +262,8 @@ void run_game_play(program_manager &manager)
 void run_post_game(program_manager &manager)
 {
     bool continue_exit_selected = false;
-    bool play_unlock_ship = false;
+    bool if_play_unlock_ship = false;
+    int anim_tick_count = 0;
 
     button continue_game = continue_exit_button("continue_button", 250, 600, "continue game");
     button exit_game = continue_exit_button("exit_button", 840, 600, "exit game");
@@ -272,7 +273,7 @@ void run_post_game(program_manager &manager)
 
     if (manager.game.game_won)
     {
-        add_unlocked_ship(manager, play_unlock_ship);
+        add_unlocked_ship(manager, if_play_unlock_ship);
     }
 
     while (!quit_requested() && !continue_exit_selected)
@@ -284,15 +285,15 @@ void run_post_game(program_manager &manager)
             handle_continue_exit(manager, exit_game, continue_exit_selected);
         }
 
-        if (play_unlock_ship)
-        {
-            ;
-        }
-
         clear_screen(COLOR_BLACK);
 
         update_bonus_points(manager.game.player.score, manager.game.player.bonus, score_to_draw);
         draw_post_game_scoreboard(score_to_draw, manager.game.power_up_kinds, manager.game.player, continue_game, exit_game, manager.game.time.seconds_remained);
+
+        if (if_play_unlock_ship)
+        {
+            play_unlock_ship(static_cast<ship_kind>(static_cast<int>(manager.game.level) + 1), anim_tick_count);
+        }
 
         refresh_screen(60);
     }

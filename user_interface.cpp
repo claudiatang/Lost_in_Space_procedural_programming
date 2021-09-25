@@ -100,13 +100,17 @@ void draw_ship_icon(const player_data &player, const ship_kind &kind, bool ship_
     }
     else
     {
-        ship_icon = bitmap_named("ship_icon_locked");
+        ship_icon = bitmap_named("ship_icon_locked_02");
     }
 
     draw_bitmap(ship_icon, x, y, option_to_screen());
+
     //indicate keyboard input for the icon and give a black shadow effect
-    draw_text(std::to_string(static_cast<int>(kind) + 1), COLOR_BLACK, "hackbotfont", 25, x + 5, y + 5, option_to_screen()); //the shadow of the following line
-    draw_text(std::to_string(static_cast<int>(kind) + 1), COLOR_WHITE_SMOKE, "hackbotfont", 25, x + 2, y + 2, option_to_screen());
+    if (ship_unlocked)
+    {
+        draw_text(std::to_string(static_cast<int>(kind) + 1), COLOR_BLACK, "hackbotfont", 25, x + 5, y + 5, option_to_screen()); //the shadow of the following line
+        draw_text(std::to_string(static_cast<int>(kind) + 1), COLOR_WHITE_SMOKE, "hackbotfont", 25, x + 2, y + 2, option_to_screen());
+    }
 }
 
 point_2d mini_map_coordinate(const sprite &actor, int map_width, int map_height)
@@ -222,7 +226,7 @@ void draw_game_play_finish(bool finished, bool win)
     }
     else if (finished && !win)
     {
-        draw_text("GAME OVER", COLOR_ORANGE, "hackbotfont", 150, screen_width() / 2 - 350, screen_height() / 2 - 50, option_to_screen());
+        draw_text("GAME OVER", COLOR_ORANGE, "hackbotfont", 150, screen_width() / 2 - 400, screen_height() / 2 - 50, option_to_screen());
     }
 }
 
@@ -257,7 +261,7 @@ void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up
 
     for (int i = 0; i < game_power_up_kinds.size(); i++)
     {
-        draw_power_up_summary(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 350, 70 + i * power_up_line_space);
+        draw_power_up_summary(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 350, 55 + i * power_up_line_space);
     }
 
     draw_text("TIME REMAINED ", COLOR_ORANGE, "hackbotfont", 30, 350, 500);
@@ -266,4 +270,17 @@ void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up
 
     draw_button(continue_button);
     draw_button(exit_button);
+}
+
+void play_unlock_ship(const ship_kind &kind, int &count)
+{
+    bitmap unlocked_ship = bitmap_named(ship_icon_string(kind) + "color");
+    int x_scale = count / 500;
+    int y_scale = x_scale;
+    draw_bitmap(unlocked_ship, 300, 300, option_scale_bmp(x_scale, y_scale));
+
+    if (count < 1250)
+    {
+        count += 10;
+    }
 }

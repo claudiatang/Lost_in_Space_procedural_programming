@@ -242,13 +242,13 @@ void add_game_power_ups(game_data &game)
     switch (game.level)
     {
     case LEVEL_1:
-        power_ups_num = rnd(8, 11);
+        power_ups_num = rnd(1, 2);
         break;
     case LEVEL_2:
-        power_ups_num = rnd(11, 14);
+        power_ups_num = rnd(3, 4);
         break;
     case LEVEL_3:
-        power_ups_num = rnd(14, 17);
+        power_ups_num = rnd(5, 6);
         break;
     default:
         power_ups_num = rnd(8, 11);
@@ -325,30 +325,20 @@ void add_game_garbages(game_data &game)
     }
 }
 
-void set_player_ship_kinds(const game_level &level, player_data &player)
+void set_player_ship_kinds(const vector<ship_kind> &kinds, player_data &player)
 {
-    switch (level)
+    for (int i = 0; i < player.unlocked_ship_kinds.size(); i++)
     {
-    case LEVEL_1:
-        player.unlocked_ship_kinds.push_back(AQUARII);
-        break;
-    case LEVEL_2:
-        player.unlocked_ship_kinds.push_back(AQUARII);
-        player.unlocked_ship_kinds.push_back(GLIESE);
-        break;
-    case LEVEL_3:
-        player.unlocked_ship_kinds.push_back(AQUARII);
-        player.unlocked_ship_kinds.push_back(GLIESE);
-        player.unlocked_ship_kinds.push_back(PEGASI);
-        break;
-    default:
-        player.unlocked_ship_kinds.push_back(AQUARII);
-        write_line("!!!set player ship kinds wrong!!!");
-        break;
+        player.unlocked_ship_kinds.pop_back();
+    }
+
+    for (int i = 0; i < kinds.size(); i++)
+    {
+        player.unlocked_ship_kinds.push_back(kinds[i]);
     }
 }
 
-game_data create_new_game(game_level &level)
+game_data create_new_game(game_level &level, vector<ship_kind> &unlocked_ship_kinds)
 {
     game_data game;
 
@@ -364,7 +354,7 @@ game_data create_new_game(game_level &level)
     game.game_won = false;
 
     game.player = new_player();
-    set_player_ship_kinds(game.level, game.player);
+    set_player_ship_kinds(unlocked_ship_kinds, game.player);
 
     return game;
 }

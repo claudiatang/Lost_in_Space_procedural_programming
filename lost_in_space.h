@@ -157,13 +157,13 @@ vector<fuel_kind> game_fuel_kinds(game_level &level);
  */
 void add_game_fuels(game_data &game);
 
-void set_player_ship_kinds(const game_level &level, player_data &player);
+void set_player_ship_kinds(const vector<ship_kind> &kinds, player_data &player);
 
 /**
  * Create a new game
  * 
  * @return a game_data struct as the new game 
  */
-game_data create_new_game(game_level &level);
+game_data create_new_game(game_level &level, vector<ship_kind> &unlocked_ship_kinds);
 
 #endif
