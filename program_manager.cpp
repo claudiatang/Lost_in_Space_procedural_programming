@@ -264,6 +264,10 @@ void run_post_game(program_manager &manager)
     bool continue_exit_selected = false;
     bool if_play_unlock_ship = false;
     int anim_tick_count = 0;
+    color dark_blue;
+    dark_blue.r = 0.02;
+    dark_blue.g = 0.12;
+    dark_blue.b = 0.18;
 
     button continue_game = continue_exit_button("continue_button", 250, 600, "continue game");
     button exit_game = continue_exit_button("exit_button", 840, 600, "exit game");
@@ -274,6 +278,14 @@ void run_post_game(program_manager &manager)
     if (manager.game.game_won)
     {
         add_unlocked_ship(manager, if_play_unlock_ship);
+    }
+
+    while (if_play_unlock_ship && anim_tick_count < 170)
+    {
+        clear_screen(dark_blue);
+        play_unlock_ship(static_cast<ship_kind>(static_cast<int>(manager.game.level) + 1));
+        refresh_screen(60);
+        anim_tick_count++;
     }
 
     while (!quit_requested() && !continue_exit_selected)
@@ -289,11 +301,6 @@ void run_post_game(program_manager &manager)
 
         update_bonus_points(manager.game.player.score, manager.game.player.bonus, score_to_draw);
         draw_post_game_scoreboard(score_to_draw, manager.game.power_up_kinds, manager.game.player, continue_game, exit_game, manager.game.time.seconds_remained);
-
-        if (if_play_unlock_ship)
-        {
-            play_unlock_ship(static_cast<ship_kind>(static_cast<int>(manager.game.level) + 1), anim_tick_count);
-        }
 
         refresh_screen(60);
     }

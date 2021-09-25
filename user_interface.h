@@ -123,6 +123,6 @@ void draw_bonus_points(const int &score_to_draw, int font_size, double x, double
 
 void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button, int &sec_remained);
 
-void play_unlock_ship(const ship_kind &kind, int &count);
+void play_unlock_ship(const ship_kind &kind);
 
 #endif

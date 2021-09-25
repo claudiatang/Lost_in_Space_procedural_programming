@@ -272,15 +272,9 @@ void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up
     draw_button(exit_button);
 }
 
-void play_unlock_ship(const ship_kind &kind, int &count)
+void play_unlock_ship(const ship_kind &kind)
 {
-    bitmap unlocked_ship = bitmap_named(ship_icon_string(kind) + "color");
-    int x_scale = count / 500;
-    int y_scale = x_scale;
-    draw_bitmap(unlocked_ship, 300, 300, option_scale_bmp(x_scale, y_scale));
-
-    if (count < 1250)
-    {
-        count += 10;
-    }
+    //bitmap spark_flipbook = bitmap_named("spark_flipbook");
+    bitmap unlocked_ship = bitmap_named(ship_icon_string(kind) + "unlock");
+    draw_bitmap(unlocked_ship, 640 - bitmap_width(unlocked_ship) / 2, 360 - bitmap_height(unlocked_ship) / 2);
 }

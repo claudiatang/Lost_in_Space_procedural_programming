@@ -60,6 +60,9 @@ BITMAP,pegasi_icon_color,pegasi_icon_color.png
 BITMAP,pegasi_icon_grey,pegasi_icon_grey.png
 BITMAP,ship_icon_locked,ship_icon_locked.png
 BITMAP,ship_icon_locked_02,ship_icon_locked_02.png
+BITMAP,aquarri_icon_unlock,aquarri_icon_unlock.png
+BITMAP,gliese_icon_unlock,gliese_icon_unlock.png
+BITMAP,pegasi_icon_unlock,pegasi_icon_unlock.png
 // BUTTON
 BITMAP,level_1_active,level_1_active.png
 BITMAP,level_2_active,level_2_active.png
@@ -70,7 +73,6 @@ BITMAP,exit_button,exit_button.png
 // Other
 BITMAP,box,box.png
 BITMAP,full,full.png
-ANIM,coins,coin_animation.txt
 FONT,hackbotfont,Hackbot.otf
 // Audio
 SOUND,be_hit,be_hit.wav
