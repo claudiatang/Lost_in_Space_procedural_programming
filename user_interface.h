@@ -117,4 +117,10 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
 
 void draw_game_play_finish(bool finished, bool win);
 
+void update_bonus_points(const int &score, const int &bonus, int &score_to_update);
+
+void draw_bonus_points(const int &score_to_draw);
+
+void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button);
+
 #endif

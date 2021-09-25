@@ -68,6 +68,8 @@ struct game_data
     bool game_exit;
 };
 
+void add_bonus_points(game_data &game);
+
 /**
  * Add a power up of a certain kind to the player 
  * and increment player score accordingly

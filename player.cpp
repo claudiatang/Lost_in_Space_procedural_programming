@@ -188,3 +188,9 @@ void handle_input(player_data &player)
     if (key_down(W_KEY))
         sprite_set_dx(player.player_sprite, dx + PLAYER_SPEED);
 }
+
+void player_be_hit_effect(player_data &player)
+{
+    sprite_set_x(player.player_sprite, sprite_x(player.player_sprite) + 4 - rnd(0, 8));
+    sprite_set_y(player.player_sprite, sprite_y(player.player_sprite) + 4 - rnd(0, 8));
+}

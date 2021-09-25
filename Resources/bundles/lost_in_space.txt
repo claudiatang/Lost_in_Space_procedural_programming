@@ -50,6 +50,8 @@ BITMAP,hud_bgd_btm,hud_bgd_btm.png
 BITMAP,scoreboard_bgd,scoreboard_bgd.png
 BITMAP,icon_bgd,icon_bgd.png
 BITMAP,green_bar_bubbles,green_bar_bubbles.png
+BITMAP,red_bar_bubbles,red_bar_bubbles.png
+BITMAP,red_bar,red_bar.png
 BITMAP,aquarri_icon_color,aquarri_icon_color.png
 BITMAP,aquarri_icon_grey,aquarri_icon_grey.png
 BITMAP,gliese_icon_color,gliese_icon_color.png

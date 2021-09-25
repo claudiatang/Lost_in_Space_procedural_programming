@@ -50,6 +50,7 @@ struct player_data
 {
     sprite player_sprite;
     int score;
+    int bonus;
     ship_kind kind;
     double fuel_pct;
     vector<player_power_up> player_power_ups;
@@ -109,5 +110,7 @@ void player_switch_ship(player_data &player, ship_kind target);
  * @param player    The player to update
  */
 void handle_input(player_data &player);
+
+void player_be_hit_effect(player_data &player);
 
 #endif

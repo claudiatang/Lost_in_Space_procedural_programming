@@ -72,11 +72,18 @@ string format_time(int &seconds)
 void draw_pct_bar(const double &fuel_pct, double x, double y)
 {
     bitmap empty_fuel = bitmap_named("empty");
-    bitmap green_bar_bubbles = bitmap_named("green_bar_bubbles");
+    //bitmap green_bar_bubbles = bitmap_named("green_bar_bubbles");
 
     draw_text("FUEL:", COLOR_ORANGE, "hackbotfont", 20, x, y, option_to_screen());
     draw_bitmap(empty_fuel, x + 60, y - 5, option_to_screen());
-    draw_bitmap(green_bar_bubbles, x + 60, y - 5, option_part_bmp(0, 0, fuel_pct * bitmap_width(green_bar_bubbles), bitmap_height(green_bar_bubbles), option_to_screen()));
+    if (fuel_pct >= 0.25)
+    {
+        draw_bitmap("green_bar_bubbles", x + 60, y - 5, option_part_bmp(0, 0, fuel_pct * bitmap_width("green_bar_bubbles"), bitmap_height("green_bar_bubbles"), option_to_screen()));
+    }
+    else
+    {
+        draw_bitmap("red_bar", x + 60, y - 5, option_part_bmp(0, 0, fuel_pct * bitmap_width("red_bar"), bitmap_height("red_bar"), option_to_screen()));
+    }
 }
 
 void draw_ship_icon(const player_data &player, const ship_kind &kind, bool ship_unlocked, double x, double y)
@@ -209,13 +216,6 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
     draw_time_remained(seconds_remained, 600, 30);
 
     draw_minimap(game_power_ups, game_fuels, game_garbages, player, 1010, 20, screen_width() / 6, screen_height() / 6);
-
-    //Draw power up icons according to the game's power ups
-    //and player's power up numbers
-    // for (int i = 0; i < game_power_up_kinds.size(); i++)
-    // {
-    //     draw_power_up_summary(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 30 + i * 150, screen_height() - hub_bgd_btm_height - 50);
-    // }
 }
 
 void draw_game_play_finish(bool finished, bool win)
@@ -228,4 +228,41 @@ void draw_game_play_finish(bool finished, bool win)
     {
         draw_text("GAME OVER", COLOR_ORANGE, "hackbotfont", 150, screen_width() / 2 - 350, screen_height() / 2 - 50, option_to_screen());
     }
+}
+
+void update_bonus_points(const int &score, const int &bonus, int &score_to_update)
+{
+    write_line("score to update: " + to_string(score_to_update));
+    write_line("player score + bonus: " + to_string(score + bonus));
+    if (score_to_update < score + bonus)
+    {
+        score_to_update++;
+        write_line("updated score drawn" + to_string(score_to_update));
+    }
+    // else if (score_to_update == score + bonus)
+    // {
+    //     draw_text(to_string(score_to_update), COLOR_ORANGE, "hackbotfont", 50, 640, 100);
+    //     write_line("updated score drawn" + to_string(score_to_update));
+    // }
+}
+
+void draw_bonus_points(const int &score_to_draw)
+{
+    draw_text("SCORE ", COLOR_ORANGE, "hackbotfont", 50, 200, 100);
+    draw_text(to_string(score_to_draw), COLOR_ORANGE, "hackbotfont", 50, 640, 100);
+}
+
+void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button)
+{
+    draw_bitmap("title_screen_bgd", 0, 0);
+    draw_bitmap("scoreboard_bgd", 128, 60, option_to_screen());
+    draw_bonus_points(score_and_bonus);
+
+    for (int i = 0; i < game_power_up_kinds.size(); i++)
+    {
+        draw_power_up_summary(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 150, 120 + i * 150);
+    }
+
+    draw_button(continue_button);
+    draw_button(exit_button);
 }

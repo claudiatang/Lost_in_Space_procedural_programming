@@ -93,6 +93,8 @@ program_manager create_new_manager()
 
     set_initial_unlocked_level(manager);
 
+    manager.continue_next_game = true;
+
     return manager;
 }
 
@@ -233,7 +235,9 @@ void run_post_game(program_manager &manager)
 
     button continue_game = continue_exit_button("continue_button", 250, 600, "continue game");
     button exit_game = continue_exit_button("exit_button", 840, 600, "exit game");
-
+    int score_to_draw = manager.game.player.score;
+    add_bonus_points(manager.game);
+    move_camera_to(0, 0);
     write_line(camera_x());
     write_line(camera_y());
 
@@ -248,20 +252,20 @@ void run_post_game(program_manager &manager)
 
         clear_screen(COLOR_BLACK);
 
-        move_camera_to(0, 0);
+        update_bonus_points(manager.game.player.score, manager.game.player.bonus, score_to_draw);
+        draw_post_game_scoreboard(score_to_draw, manager.game.power_up_kinds, manager.game.player, continue_game, exit_game);
+        //draw_bitmap("title_screen_bgd", 0, 0);
+        //draw_bitmap("scoreboard_bgd", 128, 60, option_to_screen());
+        //draw_text("Player Score: ", COLOR_ORANGE, "hackbotfont", 50, 320, 360, option_to_screen());
+        //draw_text(to_string(manager.game.player.score), COLOR_ORANGE, "hackbotfont", 50, 640, 360, option_to_screen());
 
-        draw_bitmap("title_screen_bgd", 0, 0);
-        draw_bitmap("scoreboard_bgd", 128, 60, option_to_screen());
-        draw_text("Player Score: ", COLOR_ORANGE, "hackbotfont", 50, 320, 360, option_to_screen());
-        draw_text(to_string(manager.game.player.score), COLOR_ORANGE, "hackbotfont", 50, 640, 360, option_to_screen());
+        // for (int i = 0; i < manager.game.power_up_kinds.size(); i++)
+        // {
+        //     draw_power_up_summary(manager.game.power_up_kinds[i], player_power_up_number(manager.game.player, manager.game.power_up_kinds[i]), 150, 120 + i * 150);
+        // }
 
-        for (int i = 0; i < manager.game.power_up_kinds.size(); i++)
-        {
-            draw_power_up_summary(manager.game.power_up_kinds[i], player_power_up_number(manager.game.player, manager.game.power_up_kinds[i]), 150, 120 + i * 150);
-        }
-
-        draw_button(continue_game);
-        draw_button(exit_game);
+        // draw_button(continue_game);
+        // draw_button(exit_game);
 
         refresh_screen(60);
     }
