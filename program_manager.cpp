@@ -5,9 +5,9 @@ bool if_level_unlocked(const program_manager &manager, const game_level &level)
 {
     bool if_unlocked = false;
 
-    for (int i = 0; i < manager.level_unlocked.size(); i++)
+    for (int i = 0; i < manager.levels_unlocked.size(); i++)
     {
-        if (level == manager.level_unlocked[i])
+        if (level == manager.levels_unlocked[i])
         {
             if_unlocked = true;
         }
@@ -20,9 +20,9 @@ void add_unlocked_level(program_manager &manager)
 {
     bool add_new_unlocked = true;
 
-    for (int i = 0; i < manager.level_unlocked.size(); i++)
+    for (int i = 0; i < manager.levels_unlocked.size(); i++)
     {
-        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.level_unlocked[i]))
+        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.levels_unlocked[i]))
         {
             add_new_unlocked = false;
         }
@@ -30,13 +30,31 @@ void add_unlocked_level(program_manager &manager)
 
     if (add_new_unlocked == true)
     {
-        manager.level_unlocked.push_back(static_cast<game_level>(static_cast<int>(manager.game.level) + 1));
+        manager.levels_unlocked.push_back(static_cast<game_level>(static_cast<int>(manager.game.level) + 1));
+    }
+}
+
+void add_unlocked_ship(program_manager &manager, bool &play_unlock_anim)
+{
+    bool add_new_unlocked = true;
+
+    for (int i = 0; i < manager.ships_unlocked.size(); i++)
+    {
+        if (static_cast<int>(manager.game.level) + 1 == static_cast<int>(manager.ships_unlocked[i]))
+        {
+            add_new_unlocked = false;
+        }
+    }
+
+    if (add_new_unlocked == true)
+    {
+        manager.ships_unlocked.push_back(static_cast<ship_kind>(static_cast<int>(manager.game.level) + 1));
+        play_unlock_anim = true;
     }
 }
 
 void handle_select_level(program_manager &manager, const button &button_to_check, bool &selected)
 {
-    //selected = false;
 
     if (mouse_clicked(LEFT_BUTTON) && loc_within_button(button_to_check, mouse_position()) && button_to_check.active)
     {
@@ -79,12 +97,22 @@ void handle_continue_exit(program_manager &manager, const button &button_to_chec
 
 void set_initial_unlocked_level(program_manager &manager)
 {
-    for (int i = 0; i < manager.level_unlocked.size(); i++)
+    for (int i = 0; i < manager.levels_unlocked.size(); i++)
     {
-        manager.level_unlocked.pop_back();
-    };
+        manager.levels_unlocked.pop_back();
+    }
 
-    manager.level_unlocked.push_back(LEVEL_1);
+    manager.levels_unlocked.push_back(LEVEL_1);
+}
+
+void set_initial_unlocked_ship(program_manager &manager)
+{
+    for (int i = 0; i < manager.ships_unlocked.size(); i++)
+    {
+        manager.ships_unlocked.pop_back();
+    }
+
+    manager.ships_unlocked.push_back(AQUARII);
 }
 
 program_manager create_new_manager()
@@ -92,6 +120,8 @@ program_manager create_new_manager()
     program_manager manager;
 
     set_initial_unlocked_level(manager);
+
+    set_initial_unlocked_ship(manager);
 
     manager.continue_next_game = true;
 
@@ -223,23 +253,27 @@ void run_game_play(program_manager &manager)
         add_unlocked_level(manager);
     }
 
-    for (int i = 0; i < manager.level_unlocked.size(); i++)
+    for (int i = 0; i < manager.levels_unlocked.size(); i++)
     {
-        write_line("conquered level index [" + to_string(manager.level_unlocked[i]) + "]");
+        write_line("unlocked level index [" + to_string(manager.levels_unlocked[i]) + "]");
     }
 }
 
 void run_post_game(program_manager &manager)
 {
     bool continue_exit_selected = false;
+    bool play_unlock_ship = false;
 
     button continue_game = continue_exit_button("continue_button", 250, 600, "continue game");
     button exit_game = continue_exit_button("exit_button", 840, 600, "exit game");
     int score_to_draw = manager.game.player.score;
     add_bonus_points(manager.game);
     move_camera_to(0, 0);
-    write_line(camera_x());
-    write_line(camera_y());
+
+    if (manager.game.game_won)
+    {
+        add_unlocked_ship(manager, play_unlock_ship);
+    }
 
     while (!quit_requested() && !continue_exit_selected)
     {
@@ -250,22 +284,15 @@ void run_post_game(program_manager &manager)
             handle_continue_exit(manager, exit_game, continue_exit_selected);
         }
 
+        if (play_unlock_ship)
+        {
+            ;
+        }
+
         clear_screen(COLOR_BLACK);
 
         update_bonus_points(manager.game.player.score, manager.game.player.bonus, score_to_draw);
-        draw_post_game_scoreboard(score_to_draw, manager.game.power_up_kinds, manager.game.player, continue_game, exit_game);
-        //draw_bitmap("title_screen_bgd", 0, 0);
-        //draw_bitmap("scoreboard_bgd", 128, 60, option_to_screen());
-        //draw_text("Player Score: ", COLOR_ORANGE, "hackbotfont", 50, 320, 360, option_to_screen());
-        //draw_text(to_string(manager.game.player.score), COLOR_ORANGE, "hackbotfont", 50, 640, 360, option_to_screen());
-
-        // for (int i = 0; i < manager.game.power_up_kinds.size(); i++)
-        // {
-        //     draw_power_up_summary(manager.game.power_up_kinds[i], player_power_up_number(manager.game.player, manager.game.power_up_kinds[i]), 150, 120 + i * 150);
-        // }
-
-        // draw_button(continue_game);
-        // draw_button(exit_game);
+        draw_post_game_scoreboard(score_to_draw, manager.game.power_up_kinds, manager.game.player, continue_game, exit_game, manager.game.time.seconds_remained);
 
         refresh_screen(60);
     }
@@ -273,14 +300,12 @@ void run_post_game(program_manager &manager)
 
 void run_program_manager(program_manager &manager)
 {
-    //write_line("before title screen");
     run_title_screen();
 
     while (!quit_requested() && manager.continue_next_game)
     {
         run_level_selection(manager);
 
-        //write_line("exit level selection before game play");
         run_game_play(manager);
 
         run_post_game(manager);

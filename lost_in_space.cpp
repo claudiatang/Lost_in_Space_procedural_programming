@@ -4,13 +4,13 @@
 
 void add_bonus_points(game_data &game)
 {
-    write_line("game seconds remained: " + to_string(game.time.seconds_remained));
-    write_line("bonus before add: " + to_string(game.player.bonus));
+    //write_line("game seconds remained: " + to_string(game.time.seconds_remained));
+    //write_line("bonus before add: " + to_string(game.player.bonus));
     if (game.game_won)
     {
         game.player.bonus = game.time.seconds_remained * 10;
     }
-    write_line("bonus after: " + to_string(game.player.bonus));
+    //write_line("bonus after: " + to_string(game.player.bonus));
 }
 
 //the number of corresponding player power up kind incremented by 1
@@ -220,10 +220,10 @@ vector<power_up_kind> game_power_up_kinds(game_level &level)
         kinds = {STAR, COIN, DIAMOND};
         break;
     case LEVEL_2:
-        kinds = {STAR, COIN, DIAMOND, HEART, SHIELD};
+        kinds = {STAR, COIN, DIAMOND, HEART};
         break;
     case LEVEL_3:
-        kinds = {STAR, COIN, DIAMOND, HEART, SHIELD, POWER, TIME, MUSCLE};
+        kinds = {STAR, COIN, DIAMOND, HEART, SHIELD, POWER};
         break;
     default:
         write_line("!!!power up kinds assignment wrong!!!");
@@ -242,16 +242,16 @@ void add_game_power_ups(game_data &game)
     switch (game.level)
     {
     case LEVEL_1:
-        power_ups_num = rnd(8, 12);
+        power_ups_num = rnd(8, 11);
         break;
     case LEVEL_2:
-        power_ups_num = rnd(15, 18);
+        power_ups_num = rnd(11, 14);
         break;
     case LEVEL_3:
-        power_ups_num = rnd(20, 24);
+        power_ups_num = rnd(14, 17);
         break;
     default:
-        power_ups_num = rnd(8, 12);
+        power_ups_num = rnd(8, 11);
         write_line("!!!set game power up number wrong!!!");
         break;
     }

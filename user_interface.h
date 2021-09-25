@@ -90,7 +90,7 @@ void draw_power_up_summary(const power_up_kind &power_up_kind, int power_up_num,
  */
 void draw_score(const int &player_score, double x, double y);
 
-void draw_time_remained(int seconds_remained, double x, double y);
+void draw_time_remained(int &seconds_remained, int font_size, double x, double y);
 
 /**
  * This function will take a player_data struct
@@ -119,8 +119,8 @@ void draw_game_play_finish(bool finished, bool win);
 
 void update_bonus_points(const int &score, const int &bonus, int &score_to_update);
 
-void draw_bonus_points(const int &score_to_draw);
+void draw_bonus_points(const int &score_to_draw, int font_size, double x, double y);
 
-void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button);
+void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button, int &sec_remained);
 
 #endif

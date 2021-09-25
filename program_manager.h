@@ -8,7 +8,8 @@
 struct program_manager
 {
     game_level level;
-    vector<game_level> level_unlocked;
+    vector<game_level> levels_unlocked;
+    vector<ship_kind> ships_unlocked;
     game_data game;
     bool continue_next_game;
 };
@@ -17,9 +18,13 @@ bool if_level_unlocked(const program_manager &manager, const game_level &level);
 
 void add_unlocked_level(program_manager &manager);
 
+void add_unlocked_ship(program_manager &manager, bool &play_unlock_anim);
+
 void handle_select_level(program_manager &manager, const button &button_to_check, bool &selected);
 
 void set_initial_unlocked_level(program_manager &manager);
+
+void set_initial_unlocked_ship(program_manager &manager);
 
 program_manager create_new_manager();
 

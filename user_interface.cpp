@@ -154,9 +154,9 @@ void draw_minimap(const vector<power_up_data> &power_ups, const vector<fuel_data
 void draw_power_up_summary(const power_up_kind &power_up_kind, int power_up_num, double x, double y)
 {
     bitmap power_up_icon = power_up_image(power_up_kind);
-    draw_bitmap(power_up_icon, x, y, option_to_screen());
-    draw_text("X " + std::to_string(power_up_num), COLOR_BLACK, "hackbotfont", 40, bitmap_width(power_up_icon) / 2 + x + 3, bitmap_width(power_up_icon) * 2 / 3 + y + 3, option_to_screen()); //shadow of the following line
-    draw_text("X " + std::to_string(power_up_num), COLOR_WHITE_SMOKE, "hackbotfont", 40, bitmap_width(power_up_icon) / 2 + x, bitmap_width(power_up_icon) * 2 / 3 + y, option_to_screen());
+    draw_bitmap(power_up_icon, x, y, option_scale_bmp(0.75, 0.75, option_to_screen()));
+    draw_text("X " + std::to_string(power_up_num), COLOR_BLACK, "hackbotfont", 40, x + 505, y + 40, option_to_screen()); //shadow of the following line
+    draw_text("X " + std::to_string(power_up_num), COLOR_WHITE_SMOKE, "hackbotfont", 40, x + 500, y + 35, option_to_screen());
 }
 
 void draw_score(const int &player_score, double x, double y)
@@ -164,9 +164,9 @@ void draw_score(const int &player_score, double x, double y)
     draw_text("SCORE: " + to_string(player_score), COLOR_ORANGE, "hackbotfont", 25, x, y, option_to_screen());
 }
 
-void draw_time_remained(int seconds_remained, double x, double y)
+void draw_time_remained(int &seconds_remained, int font_size, double x, double y)
 {
-    draw_text(format_time(seconds_remained), COLOR_ORANGE, "hackbotfont", 25, x, y, option_to_screen());
+    draw_text(format_time(seconds_remained), COLOR_ORANGE, "hackbotfont", font_size, x, y, option_to_screen());
 }
 
 //return the number of each power up kind the player collected
@@ -197,14 +197,10 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
 void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds, int seconds_remained)
 {
     bitmap hud_top = bitmap_named("hud_bgd");
-    //bitmap hud_bottom = bitmap_named("hud_bgd_btm");
 
     int hud_bgd_top_width = bitmap_width(hud_top);
-    //int hub_bgd_btm_width = bitmap_width(hud_bottom);
-    //int hub_bgd_btm_height = bitmap_height(hud_bottom);
 
     draw_bitmap(hud_top, (screen_width() - hud_bgd_top_width) / 2, 10, option_to_screen());
-    //draw_bitmap(hud_bottom, (screen_width() - hub_bgd_btm_width) / 2, screen_height() - hub_bgd_btm_height - 15, option_to_screen());
 
     draw_pct_bar(player.fuel_pct, 20, 30);
 
@@ -213,7 +209,7 @@ void draw_hud(const player_data &player, const vector<power_up_data> &game_power
     draw_ship_icon(player, PEGASI, if_ship_unlocked(player, PEGASI), 220, 80);
 
     draw_score(player.score, 450, 30);
-    draw_time_remained(seconds_remained, 600, 30);
+    draw_time_remained(seconds_remained, 25, 760, 30);
 
     draw_minimap(game_power_ups, game_fuels, game_garbages, player, 1010, 20, screen_width() / 6, screen_height() / 6);
 }
@@ -232,12 +228,12 @@ void draw_game_play_finish(bool finished, bool win)
 
 void update_bonus_points(const int &score, const int &bonus, int &score_to_update)
 {
-    write_line("score to update: " + to_string(score_to_update));
-    write_line("player score + bonus: " + to_string(score + bonus));
+    //write_line("score to update: " + to_string(score_to_update));
+    //write_line("player score + bonus: " + to_string(score + bonus));
     if (score_to_update < score + bonus)
     {
         score_to_update++;
-        write_line("updated score drawn" + to_string(score_to_update));
+        //write_line("updated score drawn" + to_string(score_to_update));
     }
     // else if (score_to_update == score + bonus)
     // {
@@ -246,22 +242,27 @@ void update_bonus_points(const int &score, const int &bonus, int &score_to_updat
     // }
 }
 
-void draw_bonus_points(const int &score_to_draw)
+void draw_bonus_points(const int &score_to_draw, int font_size, double x, double y)
 {
-    draw_text("SCORE ", COLOR_ORANGE, "hackbotfont", 50, 200, 100);
-    draw_text(to_string(score_to_draw), COLOR_ORANGE, "hackbotfont", 50, 640, 100);
+    draw_text("SCORE ", COLOR_ORANGE, "hackbotfont", font_size, x, y);
+    draw_text(to_string(score_to_draw), COLOR_ORANGE, "hackbotfont", font_size, x + 500, y);
 }
 
-void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button)
+void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button, int &sec_remained)
 {
+    int power_up_line_space = 400 / game_power_up_kinds.size();
+
     draw_bitmap("title_screen_bgd", 0, 0);
-    draw_bitmap("scoreboard_bgd", 128, 60, option_to_screen());
-    draw_bonus_points(score_and_bonus);
+    draw_bitmap("scoreboard_bgd", 240, 60, option_to_screen());
 
     for (int i = 0; i < game_power_up_kinds.size(); i++)
     {
-        draw_power_up_summary(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 150, 120 + i * 150);
+        draw_power_up_summary(game_power_up_kinds[i], player_power_up_number(player, game_power_up_kinds[i]), 350, 70 + i * power_up_line_space);
     }
+
+    draw_text("TIME REMAINED ", COLOR_ORANGE, "hackbotfont", 30, 350, 500);
+    draw_time_remained(sec_remained, 30, 850, 490);
+    draw_bonus_points(score_and_bonus, 30, 350, 535);
 
     draw_button(continue_button);
     draw_button(exit_button);
