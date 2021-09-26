@@ -242,13 +242,13 @@ void add_game_power_ups(game_data &game)
     switch (game.level)
     {
     case LEVEL_1:
-        power_ups_num = rnd(1, 2);
+        power_ups_num = rnd(6, 9);
         break;
     case LEVEL_2:
-        power_ups_num = rnd(3, 4);
+        power_ups_num = rnd(9, 12);
         break;
     case LEVEL_3:
-        power_ups_num = rnd(5, 6);
+        power_ups_num = rnd(12, 15);
         break;
     default:
         power_ups_num = rnd(8, 11);

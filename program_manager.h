@@ -26,6 +26,8 @@ void set_initial_unlocked_level(program_manager &manager);
 
 void set_initial_unlocked_ship(program_manager &manager);
 
+void play_game_music(const game_data &game, const music bgm, bool &finish_play);
+
 program_manager create_new_manager();
 
 void run_title_screen();

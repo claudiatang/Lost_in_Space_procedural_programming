@@ -115,6 +115,37 @@ void set_initial_unlocked_ship(program_manager &manager)
     manager.ships_unlocked.push_back(AQUARII);
 }
 
+void play_game_music(const game_data &game, const music bgm, bool &finish_play)
+{
+    if (!music_playing() && !game.game_finished)
+    {
+        play_music(bgm, 1, 0.8);
+    }
+    else if (game.game_finished)
+    {
+        fade_music_out(game.time.seconds_elapsed * 1000 + 1000 - timer_ticks(game.time.game_timer));
+        if (game.game_won && !sound_effect_playing("win_1") && !finish_play)
+        {
+            finish_play = true;
+            play_sound_effect("win_1");
+        }
+        else if (!sound_effect_playing("lose") && !finish_play)
+        {
+            finish_play = true;
+            play_sound_effect("lose");
+        }
+    }
+
+    if (sound_effect_playing("be_hit") || sound_effect_playing("collect_1") || sound_effect_playing("collect_2"))
+    {
+        set_music_volume(0.1);
+    }
+    else
+    {
+        set_music_volume(0.8);
+    };
+}
+
 program_manager create_new_manager()
 {
     program_manager manager;
@@ -159,7 +190,7 @@ void run_title_screen()
 
 void run_level_selection(program_manager &manager)
 {
-    write_line("step into level selection");
+    //write_line("step into level selection");
     bool level_selected = false;
 
     button level_one = level_selection_button("level", "_1", 90, 185, if_level_unlocked(manager, LEVEL_1), "level_one");
@@ -188,14 +219,14 @@ void run_level_selection(program_manager &manager)
         refresh_screen(60);
     }
 
-    write_line("selected level " + to_string(manager.level));
+    //write_line("selected level " + to_string(manager.level));
 }
 
 void run_game_play(program_manager &manager)
 {
     manager.game = create_new_game(manager.level, manager.ships_unlocked);
     music game_bgm = music_named("macross_bgm");
-    bool finish_sound_played = false;
+    bool finish_music_play = false;
 
     //set all initial numbers of player power ups to be 0
     for (int i = 0; i < manager.game.player.player_power_ups.size(); i++)
@@ -205,42 +236,13 @@ void run_game_play(program_manager &manager)
 
     while (!quit_requested() && !manager.game.game_exit)
     {
-        if (!music_playing() && !manager.game.game_finished)
-        {
-            play_music(game_bgm, 1, 0.9);
-        }
-        else if (manager.game.game_finished)
-        {
-            fade_music_out(manager.game.time.seconds_elapsed * 1000 + 1000 - timer_ticks(manager.game.time.game_timer));
-            if (manager.game.game_won && !sound_effect_playing("win_1") && !finish_sound_played)
-            {
-                finish_sound_played = true;
-                play_sound_effect("win_1");
-            }
-            else if (!sound_effect_playing("lose") && !finish_sound_played)
-            {
-                finish_sound_played = true;
-                play_sound_effect("lose");
-            }
-        }
+        play_game_music(manager.game, game_bgm, finish_music_play);
 
-        if (sound_effect_playing("be_hit") || sound_effect_playing("collect_1") || sound_effect_playing("collect_2"))
-        {
-            set_music_volume(0.1);
-        }
-        else
-        {
-            set_music_volume(0.9);
-        }
-
-        //manage_game_play_audio(manager, game_bgm, finish_sound_played);
-        // Handle input to adjust player movement
         process_events();
         handle_input(manager.game.player);
 
         update_game(manager.game);
 
-        // Redraw everything
         clear_screen(COLOR_BLACK);
 
         draw_game(manager.game);
@@ -253,10 +255,10 @@ void run_game_play(program_manager &manager)
         add_unlocked_level(manager);
     }
 
-    for (int i = 0; i < manager.levels_unlocked.size(); i++)
-    {
-        write_line("unlocked level index [" + to_string(manager.levels_unlocked[i]) + "]");
-    }
+    // for (int i = 0; i < manager.levels_unlocked.size(); i++)
+    // {
+    //     write_line("unlocked level index [" + to_string(manager.levels_unlocked[i]) + "]");
+    // }
 }
 
 void run_post_game(program_manager &manager)
