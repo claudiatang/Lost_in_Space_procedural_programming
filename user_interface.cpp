@@ -232,18 +232,15 @@ void draw_game_play_finish(bool finished, bool win)
 
 void update_bonus_points(const int &score, const int &bonus, int &score_to_update)
 {
-    //write_line("score to update: " + to_string(score_to_update));
-    //write_line("player score + bonus: " + to_string(score + bonus));
+
     if (score_to_update < score + bonus)
     {
-        score_to_update++;
-        //write_line("updated score drawn" + to_string(score_to_update));
+        score_to_update += 5;
+        if (!sound_effect_playing("add_bonus_points"))
+        {
+            play_sound_effect("add_bonus_points");
+        }
     }
-    // else if (score_to_update == score + bonus)
-    // {
-    //     draw_text(to_string(score_to_update), COLOR_ORANGE, "hackbotfont", 50, 640, 100);
-    //     write_line("updated score drawn" + to_string(score_to_update));
-    // }
 }
 
 void draw_bonus_points(const int &score_to_draw, int font_size, double x, double y)
@@ -274,7 +271,6 @@ void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up
 
 void play_unlock_ship(const ship_kind &kind)
 {
-    //bitmap spark_flipbook = bitmap_named("spark_flipbook");
     bitmap unlocked_ship = bitmap_named(ship_icon_string(kind) + "unlock");
     draw_bitmap(unlocked_ship, 640 - bitmap_width(unlocked_ship) / 2, 360 - bitmap_height(unlocked_ship) / 2);
 }

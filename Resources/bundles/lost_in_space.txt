@@ -83,5 +83,6 @@ SOUND,win_1,win_01.wav
 SOUND,win_2,win_02.wav
 SOUND,win_3,win_03.wav
 SOUND,lose,lose.wav
+SOUND,add_bonus_points,add_bonus_points.wav
 MUSIC,macross_bgm,macross_bgm.ogg
 MUSIC,title_music,title_music.mp3

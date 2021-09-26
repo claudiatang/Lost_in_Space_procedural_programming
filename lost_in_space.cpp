@@ -294,7 +294,7 @@ void add_game_fuels(game_data &game)
 
     for (int i = 0; i < fuels_num; i++)
     {
-        game.fuels.push_back(new_fuel(rnd(int(-1.5 * screen_width()), int(1.5 * screen_width())) + 640, rnd(int(-1.5 * screen_height()), int(1.5 * screen_height())) + 360, game.fuel_kinds[rnd(kinds_size)]));
+        game.fuels.push_back(new_fuel(rnd(int(-1 * screen_width()), int(2 * screen_width())), rnd(int(-1 * screen_height()), int(2 * screen_height())), game.fuel_kinds[rnd(kinds_size)]));
     }
 }
 
@@ -321,7 +321,7 @@ void add_game_garbages(game_data &game)
 
     for (int i = 0; i < garbages_num; i++)
     {
-        game.garbages.push_back(new_garbage(rnd(int(-1.5 * screen_width()), int(1.5 * screen_width())), rnd(int(-1.5 * screen_height()), int(1.5 * screen_height())), garbage_kind(rnd(0, 3))));
+        game.garbages.push_back(new_garbage(rnd(int(-1 * screen_width()), int(2 * screen_width())), rnd(int(-1 * screen_height()), int(2 * screen_height())), garbage_kind(rnd(0, 3))));
     }
 }
 
