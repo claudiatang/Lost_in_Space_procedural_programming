@@ -85,7 +85,7 @@ void update_game_status(game_data &game)
         game.game_won = true;
     }
 
-    if (!game.game_exit && timer_ticks(game.time.game_timer) / 1000 - game.time.seconds_elapsed > 3)
+    if (!game.game_exit && timer_ticks(game.time.game_timer) / 1000 - game.time.seconds_elapsed > 4)
     {
         game.game_exit = true;
         if (has_timer("Game Timer"))

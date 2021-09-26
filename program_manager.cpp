@@ -124,10 +124,10 @@ void play_game_music(const game_data &game, const music bgm, bool &finish_play)
     else if (game.game_finished)
     {
         fade_music_out(game.time.seconds_elapsed * 1000 + 1000 - timer_ticks(game.time.game_timer));
-        if (game.game_won && !sound_effect_playing("win_1") && !finish_play)
+        if (game.game_won && !sound_effect_playing("win_2") && !finish_play)
         {
             finish_play = true;
-            play_sound_effect("win_1");
+            play_sound_effect("win_2");
         }
         else if (!sound_effect_playing("lose") && !finish_play)
         {
@@ -254,16 +254,12 @@ void run_game_play(program_manager &manager)
     {
         add_unlocked_level(manager);
     }
-
-    // for (int i = 0; i < manager.levels_unlocked.size(); i++)
-    // {
-    //     write_line("unlocked level index [" + to_string(manager.levels_unlocked[i]) + "]");
-    // }
 }
 
 void run_post_game(program_manager &manager)
 {
     bool continue_exit_selected = false;
+    bool if_unlock_sound_played = false;
     bool if_play_unlock_ship = false;
     int anim_tick_count = 0;
     color dark_blue;
@@ -284,8 +280,16 @@ void run_post_game(program_manager &manager)
 
     while (if_play_unlock_ship && anim_tick_count < 170)
     {
+        if (!sound_effect_playing("win_1") && !if_unlock_sound_played)
+        {
+            play_sound_effect("win_1");
+            if_unlock_sound_played = true;
+        }
+
         clear_screen(dark_blue);
+
         play_unlock_ship(static_cast<ship_kind>(static_cast<int>(manager.game.level) + 1));
+
         refresh_screen(60);
         anim_tick_count++;
     }
