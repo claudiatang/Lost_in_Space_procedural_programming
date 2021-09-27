@@ -58,12 +58,24 @@ struct power_up_data
     power_up_kind kind;
 };
 
+/**
+ * Space garbage data type contains all relevant information for each garbage type.
+ * 
+ * @field   grabage_sprite   used to track and represent garbage movement
+ * @field   kind              current garbage type
+ */
 struct garbage_data
 {
     sprite garbage_sprite;
     garbage_kind kind;
 };
 
+/**
+ * Fuel data type contains all relevant information for each fuel type.
+ * 
+ * @field   fuel_sprite   used to track and represent fuel movement
+ * @field   kind          current fuel type
+ */
 struct fuel_data
 {
     sprite fuel_sprite;
@@ -114,37 +126,43 @@ point_2d scr_rnd_loc();
 power_up_data new_power_up(double x, double y, const power_up_kind &kind);
 
 /**
- * Draw a power up to the screen. 
- * 
- * @param power_up_to_draw    The power up to draw to the screen
- */
-void draw_power_up(const power_up_data &power_up_to_draw);
-
-/**
  * Draw all the power ups in the game 
  * 
  * @param power_ups_to_draw 
  */
 void draw_game_power_ups(const vector<power_up_data> &power_ups_to_draw);
 
-/**
- * Movement and location update of the power up
- * @param power_up_to_update   The power being updated
- */
-void update_power_up(power_up_data &power_up_to_update);
-
 fuel_data new_fuel(double x, double y, const fuel_kind &kind);
 
-void draw_fuel(const fuel_data &fuel_to_draw);
-
+/**
+ * draw fuels of the game
+ * 
+ * @param fuels_to_draw 
+ */
 void draw_game_fuels(const vector<fuel_data> &fuels_to_draw);
 
-//void update_fuel(fuel_data &fuel_to_update);
-
+/**
+ * Return a newly created barbage data type
+ * 
+ * @param x                garbage location x
+ * @param y                garbage location y
+ * @param kind             the kind of the garbage
+ * @return garbage_data 
+ */
 garbage_data new_garbage(double x, double y, const garbage_kind &kind);
 
+/**
+ * draw garbages of the game
+ * 
+ * @param garbages_to_draw 
+ */
 void draw_garbages(const vector<garbage_data> &garbages_to_draw);
 
+/**
+ * Update actors of the game
+ * 
+ * @param sprite_to_update 
+ */
 void update_actor_sprite(sprite &sprite_to_update);
 
 /**

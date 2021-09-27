@@ -72,7 +72,6 @@ string format_time(int &seconds)
 void draw_pct_bar(const double &fuel_pct, double x, double y)
 {
     bitmap empty_fuel = bitmap_named("empty");
-    //bitmap green_bar_bubbles = bitmap_named("green_bar_bubbles");
 
     draw_text("FUEL:", COLOR_ORANGE, "hackbotfont", 20, x, y, option_to_screen());
     draw_bitmap(empty_fuel, x + 60, y - 5, option_to_screen());

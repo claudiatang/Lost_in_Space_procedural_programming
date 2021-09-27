@@ -68,6 +68,11 @@ struct game_data
     bool game_exit;
 };
 
+/**
+ * Add bonus points to the player according time remained
+ * 
+ * @param game 
+ */
 void add_bonus_points(game_data &game);
 
 /**
@@ -87,8 +92,19 @@ void add_player_power_up(player_data &player, power_up_kind &kind);
  */
 void add_player_fuel(player_data &player, fuel_kind &kind);
 
+/**
+ * Reduce player fuel pct on collision with a garbage
+ * 
+ * @param player  the player to check
+ * @param kind    the garbage kind to check
+ */
 void reduce_player_fuel(player_data &player, garbage_kind &kind);
 
+/**
+ * Update game finish, won, exit status
+ * 
+ * @param game  the game whose status to be updated
+ */
 void update_game_status(game_data &game);
 
 /**

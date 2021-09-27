@@ -9,6 +9,14 @@
 using std::string;
 using std::vector;
 
+/**
+ * @field  button name
+ * @field  button image
+ * @field  button top left coordinate
+ * @field  button bottom right coordinate
+ * @field  button active or inactive
+ * 
+ */
 struct button
 {
     string name;
@@ -18,12 +26,43 @@ struct button
     bool active;
 };
 
+/**
+ * Create and return a button type data for continue or exit the game
+ * 
+ * @param bitmap_name   image name
+ * @param x             left most location of the button
+ * @param y             top most location of the button
+ * @param button_name   button name
+ * @return button 
+ */
 button continue_exit_button(string bitmap_name, double x, double y, string button_name);
 
+/**
+ * Create and return a button type data for selecting levels
+ * 
+ * @param bitmap_name   image name
+ * @param x             left most location of the button
+ * @param y             top most location of the button
+ * @param button_name   button name
+ * @return button 
+ */
 button level_selection_button(string str_stem, string str_num, double x, double y, bool is_active, string btn_name);
 
+/**
+ * Draw button on the screen
+ * 
+ * @param button_to_draw 
+ */
 void draw_button(const button &button_to_draw);
 
+/**
+ * Return a boolean value whether a location is within the button
+ * 
+ * @param button      button to be queried
+ * @param input_loc   location to be queried
+ * @return true       when the location is within the botton
+ * @return false      when the location is outside the button
+ */
 bool loc_within_button(const button &button, point_2d input_loc);
 
 string format_time(int &seconds);
@@ -115,14 +154,53 @@ int player_power_up_number(const player_data &player, const power_up_kind &kind)
  */
 void draw_hud(const player_data &player, const vector<power_up_data> &game_power_ups, const vector<fuel_data> &game_fuels, const vector<garbage_data> &game_garbages, const vector<power_up_kind> &game_power_up_kinds, int seconds_remained);
 
+/**
+ * Draw Win or Game Over according to game result on the screen
+ * 
+ * @param finished   
+ * @param win 
+ */
 void draw_game_play_finish(bool finished, bool win);
 
+/**
+ * Update bonus score points for the player
+ * 
+ * @param score             player score to start with
+ * @param bonus             player bonus to be added on
+ * @param score_to_update   player score to be updated
+ */
 void update_bonus_points(const int &score, const int &bonus, int &score_to_update);
 
+/**
+ * Draw adding bonus points animation
+ * 
+ * @param score_to_draw   score to be drawn
+ * @param font_size       font size of the score
+ * @param x               location x
+ * @param y               location y
+ */
 void draw_bonus_points(const int &score_to_draw, int font_size, double x, double y);
 
+/**
+ * Draw post game scoreboard with information of
+ * power ups that have been collect
+ * player score and bonus points
+ * time remained for the game
+ * 
+ * @param score_and_bonus 
+ * @param game_power_up_kinds 
+ * @param player 
+ * @param continue_button 
+ * @param exit_button 
+ * @param sec_remained 
+ */
 void draw_post_game_scoreboard(const int &score_and_bonus, const vector<power_up_kind> &game_power_up_kinds, const player_data &player, const button &continue_button, const button &exit_button, int &sec_remained);
 
+/**
+ * play unlock ship animation
+ * 
+ * @param kind   the ship kind that is being unlocked
+ */
 void play_unlock_ship(const ship_kind &kind);
 
 #endif

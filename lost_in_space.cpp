@@ -4,13 +4,11 @@
 
 void add_bonus_points(game_data &game)
 {
-    //write_line("game seconds remained: " + to_string(game.time.seconds_remained));
-    //write_line("bonus before add: " + to_string(game.player.bonus));
+
     if (game.game_won)
     {
         game.player.bonus = game.time.seconds_remained * 10;
     }
-    //write_line("bonus after: " + to_string(game.player.bonus));
 }
 
 //the number of corresponding player power up kind incremented by 1

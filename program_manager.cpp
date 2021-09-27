@@ -162,7 +162,6 @@ program_manager create_new_manager()
 void run_title_screen()
 {
     write_line("step into title");
-    //int title_seconds;
     timer title_timer = create_timer("Title Timer");
     bitmap title_bgd = bitmap_named("title_screen_bgd");
     bitmap title_font = bitmap_named("title_font");
@@ -175,7 +174,6 @@ void run_title_screen()
     {
         process_events();
         clear_screen(COLOR_BLACK);
-        //write_line("step into title while loop");
 
         draw_bitmap(title_bgd, 0, 0);
         draw_bitmap(title_font, screen_width() / 2 - bitmap_width(title_font) / 2, screen_height() / 2 - bitmap_height(title_font) / 2);
@@ -190,7 +188,6 @@ void run_title_screen()
 
 void run_level_selection(program_manager &manager)
 {
-    //write_line("step into level selection");
     bool level_selected = false;
 
     button level_one = level_selection_button("level", "_1", 90, 185, if_level_unlocked(manager, LEVEL_1), "level_one");
@@ -218,8 +215,6 @@ void run_level_selection(program_manager &manager)
         draw_button(level_three);
         refresh_screen(60);
     }
-
-    //write_line("selected level " + to_string(manager.level));
 }
 
 void run_game_play(program_manager &manager)
@@ -278,6 +273,7 @@ void run_post_game(program_manager &manager)
         add_unlocked_ship(manager, if_play_unlock_ship);
     }
 
+    //display unlocking ship kind screen if there is new ship kind unlocked
     while (if_play_unlock_ship && anim_tick_count < 170)
     {
         if (!sound_effect_playing("win_1") && !if_unlock_sound_played)
