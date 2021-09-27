@@ -206,7 +206,7 @@ void run_level_selection(program_manager &manager)
         {
             handle_select_level(manager, level_two, level_selected);
         }
-        if (!level_selected)
+        else if (!level_selected)
         {
             handle_select_level(manager, level_three, level_selected);
         }
